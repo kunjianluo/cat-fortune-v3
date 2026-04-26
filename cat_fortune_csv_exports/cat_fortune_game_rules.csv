@@ -1,0 +1,7 @@
+﻿rule_id,version_scope,description,source_doc,source_section
+success_condition_v1,v1_existing,用户当前所在店铺与正确店铺一致，且两种食材与目标配方完全匹配。,0421.md,5.3 当前版本胜负条件
+success_condition_v2,v2_requirement,两种原料均匹配当前问题正确答案所需原料。,0424.md,占卜反馈：进入反馈页面的前提条件
+half_success_condition_v2,v2_requirement,两种原料中有且仅有一种匹配正确答案所需原料。,0424.md,占卜反馈：进入反馈页面的前提条件
+failure_condition_v2,v2_requirement,两种原料均不匹配正确答案所需原料。,0424.md,占卜反馈：进入反馈页面的前提条件
+q39_shared_hint,v2_requirement,Q39 鱼蛋+鱼蛋两个原料相同，不存在只匹配B，使用共享半成功提示。,0424.md,半成功提示页 文案匹配规则
+v2_minimal_failure_scope,v2_minimal_decision,当前CSV/编译优先支持废话签和半成功提示；爪印和猫毛作为未来接口。,user_decision,conversation decision

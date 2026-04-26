@@ -1,0 +1,4 @@
+﻿shop_id,front_name,short_name,order,position,description,door_type,door_motion,sfx,npc_cat,npc_desc,source_doc,source_section
+dessert-station,失眠甜品站,甜品站,1,left,治愈系的甜蜜避风港，软糯梦幻的终点。,玻璃推拉门,单侧平移,玻璃摩擦的“嗞溜”声,布偶猫,戴粉色蕾丝领结和迷你厨师帽，眼睛很大，呈眨眼待机状。,0424.md,三个商店
+ice-room,零点冰室,冰室,2,middle,冰火交融的港味经典，苦涩中带点温柔。,木质平推门,双扇平开,吱呀声 + 清脆风铃声,橘猫,戴白围裙，耳朵后别着一支铅笔，呈待机眯眼状。,0424.md,三个商店
+street-stall,霓虹大排档,大排档,3,right,深夜烟火气的聚集地，热辣滚烫的转机。,金属卷闸门,向上卷起,金属拉拽的“哗啦”声,奶牛猫,披着白色汗衫，脖子上挂着一条毛巾，呈眨眼待机状。,0424.md,三个商店

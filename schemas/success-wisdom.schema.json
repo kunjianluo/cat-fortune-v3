@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "success-wisdom.schema.json",
+  "title": "Success Wisdom",
+  "type": "object",
+  "required": ["success_wisdom"],
+  "properties": {
+    "_comment": { "type": "string" },
+    "success_wisdom": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["issue_id", "food_name", "text", "tone"],
+        "properties": {
+          "issue_id": { "type": "string" },
+          "food_name": { "type": "string" },
+          "text": { "type": "string" },
+          "tone": { "type": "string" }
+        }
+      }
+    }
+  }
+}
+

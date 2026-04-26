@@ -1,0 +1,16 @@
+﻿file_name,purpose,source_basis,notes
+cat_fortune_shops.csv,三家店铺基础配置，使用0424前台名。,0421.md + 0424.md,缺失于md的字段不编造，留空并标记not_provided_in_md或needs_manual_review。
+cat_fortune_ingredients.csv,18种核心食材与所属店铺、短介绍。,0421.md + 0424.md,缺失于md的字段不编造，留空并标记not_provided_in_md或needs_manual_review。
+cat_fortune_recipes_and_half_success_hints.csv,Q01-Q40配方、成品、半成功提示。,0421.md + 0424.md,缺失于md的字段不编造，留空并标记not_provided_in_md或needs_manual_review。
+cat_fortune_success_wisdom.csv,Q01-Q40成功智慧文案。,0421.md + 0424.md,缺失于md的字段不编造，留空并标记not_provided_in_md或needs_manual_review。
+cat_fortune_nonsense_slips.csv,废话签文案池与默认fallback。,0421.md + 0424.md,缺失于md的字段不编造，留空并标记not_provided_in_md或needs_manual_review。
+cat_fortune_issue_master_compact.csv,旧编译器兼容用紧凑主表。,0421.md + 0424.md,缺失于md的字段不编造，留空并标记not_provided_in_md或needs_manual_review。
+cat_fortune_issue_master_full.csv,完整issue主表，含V1已实现5题直出标题/谜语和缺失字段标记。,0421.md + 0424.md,缺失于md的字段不编造，留空并标记not_provided_in_md或needs_manual_review。
+cat_fortune_v1_seed_issues.csv,0421 V1已实现5个心结入口。,0421.md + 0424.md,缺失于md的字段不编造，留空并标记not_provided_in_md或needs_manual_review。
+cat_fortune_issue_taxonomy_review.csv,分类待人工确认表；只填充0424明确示例Q01。,0421.md + 0424.md,缺失于md的字段不编造，留空并标记not_provided_in_md或needs_manual_review。
+cat_fortune_failure_penalties.csv,不成功三种惩罚及当前最小实现范围。,0421.md + 0424.md,缺失于md的字段不编造，留空并标记not_provided_in_md或needs_manual_review。
+cat_fortune_ui_copy.csv,来自0421/0424的UI固定文案。,0421.md + 0424.md,缺失于md的字段不编造，留空并标记not_provided_in_md或needs_manual_review。
+cat_fortune_flow_states.csv,V1已实现流程与V2需求状态机。,0421.md + 0424.md,缺失于md的字段不编造，留空并标记not_provided_in_md或needs_manual_review。
+cat_fortune_shop_scene_specs.csv,三店店内视觉设定。,0421.md + 0424.md,缺失于md的字段不编造，留空并标记not_provided_in_md或needs_manual_review。
+cat_fortune_asset_placeholders.csv,音频/图片/sprite占位清单。,0421.md + 0424.md,缺失于md的字段不编造，留空并标记not_provided_in_md或needs_manual_review。
+cat_fortune_game_rules.csv,成功/半成功/失败等判定规则。,0421.md + 0424.md,缺失于md的字段不编造，留空并标记not_provided_in_md或needs_manual_review。

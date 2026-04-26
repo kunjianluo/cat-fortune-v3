@@ -1,0 +1,4 @@
+﻿penalty_id,name,weight_percent,active_in_v2_minimal,ui_type,trigger,interaction,return_condition,source_doc,source_section
+nonsense-slip,猫咪废话签,50,true,modal_slip,两种原料均不匹配正确答案所需原料,点击“撕掉”按钮,签消失后返回商店页,0424.md,不成功页
+mud-paw,猫咪嫌弃 + 泥巴猫爪印,25,false,wipe_marks,两种原料均不匹配正确答案所需原料,滑动擦除所有爪印,擦完爪印后返回商店页,0424.md,不成功页
+cat-hair,猫毛过敏,25,false,swipe_particles_timeout,两种原料均不匹配正确答案所需原料,滑动驱散猫毛或等待15秒,驱散全部或15秒结束后返回商店页,0424.md,不成功页

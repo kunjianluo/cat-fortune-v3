@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "half-success-hints.schema.json",
+  "title": "Half Success Hints",
+  "type": "object",
+  "required": ["half_success_hints"],
+  "properties": {
+    "_comment": { "type": "string" },
+    "half_success_hints": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["issue_id", "type", "hint_a", "hint_b", "shared_hint"],
+        "properties": {
+          "issue_id": { "type": "string" },
+          "type": { "type": "string" },
+          "hint_a": { "type": "string" },
+          "hint_b": { "type": "string" },
+          "shared_hint": { "type": ["string", "null"] }
+        }
+      }
+    }
+  }
+}

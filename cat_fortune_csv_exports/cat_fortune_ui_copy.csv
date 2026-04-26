@@ -1,0 +1,17 @@
+﻿copy_key,text,area,source_doc,source_section
+opening.enter_button,推门而入,opening,0424.md,开头
+opening.sign_text,大馋猫：深夜占卜,opening,0424.md,开头
+cat_intro.line_1,（哈欠）...又是这个点，又是这种味道。,opening,0424.md,猫大师登场
+cat_intro.line_2,说吧，今晚是什么东西让你这只两脚兽消化不良？,opening,0424.md,猫大师登场
+card.prompt,挑一张最贴近你此刻心境的牌吧。,tag_selection,0424.md,问题标签选择
+shop.ingredient_prompt,你需要什么食材？,shop_interior,0424.md,献祭食材选择
+sacrifice.submit_label,选好了,sacrifice,0424.md,献祭食材选择
+sacrifice.not_enough,食材还不充足哦,sacrifice,0424.md,献祭食材选择
+half_success.ack,我知道了,feedback,0424.md,半成功提示页
+success.take_wisdom,把智慧带走,success,0424.md,存档与重置
+collection.duplicate,老味道，新感悟,collection,0424.md,存档与重置
+failure.default_fallback,猫咪打了个哈欠，你什么也没得到。,failure,0424.md,不成功页
+v1.header_title,大馋猫深夜占卜屋,v1,0421.md,6 信息架构与页面结构
+v1.header_subtitle,选一个你此刻的“心结”,v1,0421.md,6 信息架构与页面结构
+v1.failure,猫大师：『不对，这味道简直是灾难。再试一次！』,v1,0421.md,5.3 当前版本胜负条件
+v1.restart,再卜一卦,v1,0421.md,8.6 再来一局

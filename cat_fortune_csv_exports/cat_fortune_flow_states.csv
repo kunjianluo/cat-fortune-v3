@@ -1,0 +1,18 @@
+﻿state_id,version_scope,screen,description,entry_condition,exit_condition,source_doc,source_section
+v1_start_screen,v1_existing,start,用户从5个心结中选择1个,页面打开,选择心结,0421.md,8.1/8.2
+v1_riddle_shop_tabs,v1_existing,game,显示谜语，切换冰室/大排档/甜品站，点击两种食材,已选择心结,选满两种食材并判定,0421.md,8.3/8.4
+v1_result_overlay,v1_existing,result,成功展示食物和智慧文案；失败提示重试,判定完成,再卜一卦或重试,0421.md,8.5/8.6
+opening_street,v2_requirement,opening,深夜街道封面，雨声、霓虹招牌、推门而入按钮,资源加载完成,点击推门而入,0424.md,开头 PART 1
+opening_door_transition,v2_requirement,transition,街道缩放、门帘滑开、风铃声、雨声停止,点击推门而入,1s 动画结束,0424.md,开头 PART 2
+cat_intro_dialogue,v2_requirement,cat_intro,猫大师假寐、睁眼、两句对话、打字机效果,门帘开到50%,对话完成,0424.md,开头 PART 3
+tag_persona_shift,v2_requirement,tag_selection,绒帽降落、权杖浮现，猫大师从店主转为占卜师,猫大师登场对话后,动作结束锁定点击,0424.md,问题标签选择 4.1
+tag_cards_level1,v2_requirement,tag_selection,5张卡牌飞出，一级心绪卡选择,身份蜕变完成,点击一级卡牌,0424.md,问题标签选择 4.2
+tag_cards_level2,v2_requirement,tag_selection,在居中大卡牌上选择二级心事,一级卡牌选中,点击二级标题,0424.md,问题标签选择 功能4
+tag_cards_level3,v2_requirement,tag_selection,选择三级具体问题，前台不显示Q编号,二级标题选中,点击具体问题,0424.md,问题标签选择 功能5
+shop_street,v2_requirement,shop_select,三家店铺平行排列，悬停显示介绍，点击进店,猫大师胃口生成后,点击店铺,0424.md,三个商店 PART 1
+shop_interior_locked,v2_requirement,shop_interior,店内陈列，食材不可交互，需先点击猫店员,进店完成,点击猫店员NPC,0424.md,三个商店 PART 2
+sacrifice_select,v2_requirement,sacrifice,背包与铃铛出现，选择两种食材，可撤销,点击猫店员NPC,点击铃铛提交,0424.md,三个商店 PART 3
+judge_animation,v2_requirement,judgement,烟雾、猫大师剪影、食材碰撞、爆白进入判定结果,提交献祭,成功/半成功/不成功分支,0424.md,判定动画
+result_success,v2_requirement,success,食材合成成功、食物卡片、猫咪智慧、把智慧带走,两种原料均匹配,回到猫大师假寐或后续收藏,0424.md,成功结局
+result_half_success,v2_requirement,half_success,显示半成功提示模态，点我知道了返回商店选择页,有且仅有一种原料匹配,点击我知道了,0424.md,占卜反馈 PART 1
+result_failure_nonsense,v2_minimal_active,failure,展示猫咪废话签，点击撕掉返回商店页,两种原料均不匹配且抽中废话签,点击撕掉,0424.md,不成功页

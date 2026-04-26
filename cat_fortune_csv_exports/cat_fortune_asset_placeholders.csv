@@ -1,0 +1,11 @@
+﻿asset_key,asset_type,description,status,source_doc,source_section
+audio_rain_loop,audio,背景雨声BGM,placeholder_needed,0424.md,开头 PART 1
+audio_door_bell,audio,风铃声,placeholder_needed,0424.md,开头 PART 2
+audio_shop_ice_room,audio,冰室调羹碰杯声/店内音乐,placeholder_needed,0424.md,三个商店
+audio_shop_stall,audio,大排档炒锅声/店内音乐,placeholder_needed,0424.md,三个商店
+audio_shop_dessert,audio,甜品站八音盒感店内音乐,placeholder_needed,0424.md,三个商店
+sprite_cat_master_sleep,sprite,猫大师闭眼假寐,placeholder_needed,0424.md,开头 PART 3
+sprite_cat_master_one_eye,sprite,猫大师睁开一只眼,placeholder_needed,0424.md,开头 PART 3
+sprite_cat_master_star_eye,sprite,猫大师震惊/星星眼,placeholder_needed,0424.md,成功结局
+image_street_three_shops,image,夜景版三个店铺平行排列 Demo 图，需用户补充视觉描述,placeholder_needed,0424.md,三个商店
+image_food_card,image,成品食物卡片/金色光芒射线,placeholder_needed,0424.md,成功结局

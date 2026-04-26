@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>大馋猫：深夜占卜 - V2</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <section id="opening-screen" class="opening-screen" aria-labelledby="opening-title">
+    <div class="rain-layer" aria-hidden="true"></div>
+    <div class="street-silhouette" aria-hidden="true">
+      <div class="shop-block shop-block-left"></div>
+      <div class="shop-block shop-block-center"></div>
+      <div class="shop-block shop-block-right"></div>
+    </div>
+    <div class="opening-content">
+      <div class="neon-kicker">深夜 · 雨街 · 占卜铺</div>
+      <h1 id="opening-title" class="neon-title">大馋猫：深夜占卜</h1>
+      <button id="enter-door-btn" class="door-btn" type="button" disabled>[ 推门而入 ]</button>
+      <div id="opening-status" class="opening-status" aria-live="polite">正在加载猫大师的菜单……</div>
+    </div>
+  </section>
+
+  <section id="cat-intro-screen" class="cat-intro-screen" aria-labelledby="intro-dialogue" hidden>
+    <div class="intro-stage">
+      <div class="intro-cat" aria-hidden="true">🐱</div>
+      <div class="intro-dialogue-box">
+        <p id="intro-dialogue">（哈欠）...又是这个点，又是这种味道。</p>
+        <button id="intro-continue-btn" class="intro-continue-btn" type="button">继续</button>
+      </div>
+    </div>
+  </section>
+
+  <div id="header">
+    <h2>大馋猫：深夜占卜</h2>
+    <div class="header-subtitle">选一个你此刻的心结</div>
+  </div>
+
+  <div id="game-container">
+    <div id="start-screen" aria-live="polite">
+      <div class="start-card">
+        <div class="start-title">选一个你此刻的心结</div>
+        <div class="start-subtitle">猫大师只先听五种最熟悉的烦恼。</div>
+        <div id="issue-buttons" class="issue-list"></div>
+      </div>
+    </div>
+
+    <div id="cat-master" aria-hidden="true">🐱</div>
+    <div id="riddle-box">选一个你此刻的心结，猫大师才肯开口。</div>
+
+    <div id="shop-ui">
+      <div class="shop-tabs" id="shop-tabs"></div>
+      <div id="ingredients" class="ingredient-grid"></div>
+      <div class="hint-text">（提示：点击食材放入献祭槽；点击槽位可以取回）</div>
+      <div id="sacrifice-area" class="sacrifice-area" aria-live="polite">
+        <button class="sacrifice-slot" id="sacrifice-slot-0" type="button" data-slot-index="0">
+          <span class="slot-label">献祭槽 1</span>
+          <span class="slot-value">等待食材</span>
+        </button>
+        <button class="sacrifice-slot" id="sacrifice-slot-1" type="button" data-slot-index="1">
+          <span class="slot-label">献祭槽 2</span>
+          <span class="slot-value">等待食材</span>
+        </button>
+      </div>
+      <button class="issue-btn submit-btn" id="submit-btn" type="button" aria-disabled="true">选好了</button>
+      <div id="feedback" class="feedback" aria-live="polite"></div>
+    </div>
+  </div>
+
+  <div id="overlay" class="result-overlay" role="dialog" aria-modal="true" aria-labelledby="food-name">
+    <div id="result-card" class="result-card">
+      <div id="result-eyebrow" class="result-eyebrow">猫大师端上一道夜宵</div>
+      <div id="food-result" class="food-icon">🍜</div>
+      <h3 id="food-name">获得食物</h3>
+      <p id="wisdom-text" class="result-text">猫咪智慧加载中...</p>
+      <button class="issue-btn result-action-btn" id="result-action-btn" type="button">把智慧带走</button>
+    </div>
+  </div>
+
+  <script src="./app.js" defer></script>
+</body>
+</html>

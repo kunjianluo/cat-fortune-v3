@@ -1,0 +1,48 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "issues.schema.json",
+  "title": "Issues",
+  "type": "object",
+  "required": ["issues"],
+  "properties": {
+    "_comment": { "type": "string" },
+    "issues": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "category_lv1_id",
+          "category_lv2_id",
+          "shop_id",
+          "recipe",
+          "food_name",
+          "riddle_text",
+          "success_wisdom_id",
+          "half_success_hint_id",
+          "is_live",
+          "order"
+        ],
+        "properties": {
+          "id": { "type": "string" },
+          "title": { "type": "string" },
+          "category_lv1_id": { "type": "string" },
+          "category_lv2_id": { "type": "string" },
+          "shop_id": { "type": "string" },
+          "recipe": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "food_name": { "type": "string" },
+          "riddle_text": { "type": "string" },
+          "success_wisdom_id": { "type": "string" },
+          "half_success_hint_id": { "type": "string" },
+          "special_case": { "type": ["object", "null"] },
+          "is_live": { "type": "boolean" },
+          "order": { "type": "number" }
+        }
+      }
+    }
+  }
+}
