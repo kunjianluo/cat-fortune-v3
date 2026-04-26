@@ -61,7 +61,9 @@ The issue play screen now has lightweight shop-interior polish: an issue brief, 
 
 The shop-interior play screen has also been compacted for one-screen demo usability on desktop, with internal scrolling allowed for dense ingredient racks.
 
-Submitting a full sacrifice now enters a lightweight judgement transition before showing the result. Richer smoke, ingredient collision, and audio effects remain future work.
+Submitting a full sacrifice now enters a lightweight judgement transition before showing the result. Stage 1 now includes a judgement overlay, bell shake, glowing sacrifice slots, smoke/glow/flash polish, ingredient fusion cards, a cat silhouette placeholder, and safe SFX hooks for future audio assets, while full physics-style collision, real audio production, and final cat sprite judgement remain future work.
+
+Stage 2 card-selection is completed for the current demo baseline. The default five seed issues remain the main entry, and a separate expanded three-level emotional card-flow demo can be opened from the seed screen using only those five seed issues. The expanded flow now includes lightweight oracle-mode cat master ambience, star-circle/card-dealing polish, and a selected-issue light-orb transition into the existing issue play screen. Full 40-issue taxonomy, real cat sprites, real audio, and full cinematic PRD card animation remain future work.
 
 V3 does not yet implement:
 
@@ -98,6 +100,7 @@ Implemented now:
 - Lightweight opening cover with a dark rainy street mood, neon title, and `[ 推门而入 ]` entry button
 - Short cat master intro using the 0424 dialogue lines before seed selection begins
 - Start from five V1 seed 心结, without showing internal Q ids to the player
+- Offer a separate expanded three-level emotional card-flow demo using the same five seed 心结
 - Resolve the selected seed to its full issue by `issue_id`
 - Use two lightweight sacrifice slots: ingredient clicks fill empty slots, filled slots can be clicked to remove, and judging happens only after clicking `选好了`
 - Show lightweight PRD-aligned result overlays: success food wisdom card, half-success hint modal, and nonsense-slip failure modal

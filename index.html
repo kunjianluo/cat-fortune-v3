@@ -39,10 +39,38 @@
 
   <div id="game-container">
     <div id="start-screen" aria-live="polite">
-      <div class="start-card">
+      <div id="seed-selection-panel" class="start-card">
         <div class="start-title">选一个你此刻的心结</div>
         <div class="start-subtitle">猫大师只先听五种最熟悉的烦恼。</div>
         <div id="issue-buttons" class="mood-card-grid"></div>
+        <button id="expanded-card-flow-btn" class="expanded-card-flow-btn" type="button">探索更多心结</button>
+      </div>
+
+      <div id="card-flow-panel" class="card-flow-panel" hidden>
+        <div class="card-flow-oracle" aria-hidden="true">
+          <div class="star-circle">
+            <span class="star-dot"></span>
+            <span class="star-dot"></span>
+            <span class="star-dot"></span>
+            <span class="star-dot"></span>
+            <span class="star-dot"></span>
+            <span class="star-dot"></span>
+          </div>
+          <div class="oracle-cat">🐱</div>
+          <div class="oracle-copy">
+            <div class="oracle-title">猫大师开始摆牌</div>
+            <div class="oracle-subtitle">今晚只翻五张安全 demo 心绪卡</div>
+          </div>
+        </div>
+        <div class="card-flow-header">
+          <button id="card-flow-back-btn" class="card-flow-back" type="button">返回</button>
+          <div class="card-flow-heading">
+            <div id="card-flow-title" class="card-flow-title">完整心绪卡牌</div>
+            <div id="card-flow-subtitle" class="card-flow-subtitle">临时整理入口</div>
+          </div>
+        </div>
+        <div id="card-flow-grid" class="card-flow-grid"></div>
+        <div id="card-flow-light-orb" class="card-flow-light-orb" aria-hidden="true"></div>
       </div>
     </div>
 
@@ -93,7 +121,23 @@
   </div>
 
   <div id="judgement-overlay" class="judgement-overlay" role="status" aria-live="polite" hidden>
+    <div class="judgement-smoke" aria-hidden="true">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <div class="judgement-flash" aria-hidden="true"></div>
     <div class="judgement-card">
+      <div class="judgement-fusion-stage" aria-hidden="true">
+        <div class="judgement-cat-shadow">猫</div>
+        <div class="judgement-ingredient-card left">
+          <span id="judgement-ingredient-left">神秘食材</span>
+        </div>
+        <div class="judgement-fusion-core"></div>
+        <div class="judgement-ingredient-card right">
+          <span id="judgement-ingredient-right">神秘食材</span>
+        </div>
+      </div>
       <div class="judgement-cat" aria-hidden="true">🐱</div>
       <p class="judgement-text">猫大师眯起眼，正在闻这两味食材的命数……</p>
     </div>

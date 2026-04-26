@@ -37,6 +37,25 @@ content/
 - `audio/bgm`: looping ambience or background music, such as rain and warm shop ambience.
 - `audio/sfx`: short interaction sounds, such as click, door bell, sacrifice bell, success chime, and failure slip tear.
 
+Current V3 has safe SFX hooks in `app.js`, but real files are optional. The hook only plays manifest audio records marked `ready`; placeholder or missing records fall back to silence and must not block gameplay. BGM remains future work and should not autoplay.
+
+Expected future audio folders:
+
+```text
+assets/audio/bgm/
+assets/audio/sfx/
+```
+
+Example SFX names:
+
+- `click`
+- `door-bell`
+- `sacrifice-bell`
+- `judgement-smoke`
+- `success`
+- `failure-slip`
+- `slip-tear`
+
 Recommended formats:
 
 - BGM: `.mp3` or `.ogg`, stereo, normalized volume, short seamless loops where possible.
@@ -101,4 +120,3 @@ cat-master-judging-0003.png
 ## Copyright / Royalty-free Reminder
 
 Only commit assets that are original, generated with rights to use in this project, public domain, or clearly royalty-free for web demo usage. Keep source notes or license links near final production assets when possible.
-

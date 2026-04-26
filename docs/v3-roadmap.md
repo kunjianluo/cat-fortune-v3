@@ -33,10 +33,15 @@ rainy opening
    - Add `scripts/validate-assets.js`.
    - Document placeholder and naming rules.
 
-2. Mood-card seed selection
+2. Mood-card seed selection / Stage 2 card-flow scaffold
+   - Status: completed for the current demo baseline.
    - Restyle the five seed choices as mood cards.
    - Keep existing issue IDs and runtime-data lookup behavior.
    - Avoid exposing all 40 issues by default.
+   - Added a lightweight multi-level card-flow state scaffold for category -> subcategory -> issue -> existing issue play.
+   - The expanded card-flow entry is separate from the default five-seed path and uses the five seed issues only.
+   - Added lightweight oracle-mode cat master ambience, star-circle/card-dealing polish, and selected-issue light-orb transition.
+   - Full 40-issue taxonomy, real cat sprites, real audio, and full PRD cinematic card transition remain future work.
 
 3. Shop/interior visual polish
    - Status: started.
@@ -46,9 +51,13 @@ rainy opening
    - Shop inventory remains driven by runtime data.
 
 4. Sacrifice/judgement transition
-   - Add a lightweight transition after `选好了`.
+   - Status: completed for the current demo baseline.
+   - Added a lightweight transition after `选好了`.
+   - Added bell shake, sacrifice slot glow, and CSS smoke/glow overlay polish.
+   - Added text-only ingredient fusion cards and a cat silhouette judgement placeholder.
+   - Added safe SFX hooks for future optional audio assets.
    - Keep two-slot logic and success / half-success / failure rules unchanged.
-   - Add optional audio hooks that gracefully no-op when assets are missing.
+   - Real audio files, final cat sprites, physics-style animation, and full PRD-level cinematic judgement remain future work.
 
 5. Result card polish
    - Improve success, half-success, and failure result presentation.

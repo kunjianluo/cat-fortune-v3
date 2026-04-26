@@ -180,6 +180,17 @@
       "notes": "Bell sound for sacrifice confirmation."
     },
     {
+      "id": "judgement-smoke-sfx",
+      "type": "audio",
+      "scene": "judgement",
+      "path": "assets/audio/sfx/judgement-smoke.wav",
+      "recommended_size": "1-3 seconds",
+      "status": "placeholder",
+      "fallback": "Silence",
+      "required_for_v3_demo": false,
+      "notes": "Future smoke or fusion whoosh for the judgement transition."
+    },
+    {
       "id": "success-sfx",
       "type": "audio",
       "scene": "result",
@@ -189,6 +200,17 @@
       "fallback": "Silence",
       "required_for_v3_demo": false,
       "notes": "Success result chime."
+    },
+    {
+      "id": "failure-slip-sfx",
+      "type": "audio",
+      "scene": "result",
+      "path": "assets/audio/sfx/failure-slip.wav",
+      "recommended_size": "0.5-2 seconds",
+      "status": "placeholder",
+      "fallback": "Silence",
+      "required_for_v3_demo": false,
+      "notes": "Future paper reveal sound for a failure nonsense slip appearing."
     },
     {
       "id": "failure-slip-tear-sfx",
@@ -203,4 +225,3 @@
     }
   ]
 }
-
