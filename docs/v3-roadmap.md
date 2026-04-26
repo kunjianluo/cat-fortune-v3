@@ -39,9 +39,11 @@ rainy opening
    - Avoid exposing all 40 issues by default.
 
 3. Shop/interior visual polish
-   - Add placeholder slots for shop backgrounds and shopkeeper sprites.
-   - Improve ingredient presentation without changing recipe judgement.
-   - Keep shop inventory driven by runtime data.
+   - Status: started.
+   - Added lightweight issue brief, shop signboard, shopkeeper placeholder, ingredient rack, and sacrifice counter styling.
+   - Placeholder hooks exist for shop backgrounds and shopkeeper sprites.
+   - Ingredient presentation is improved without changing recipe judgement.
+   - Shop inventory remains driven by runtime data.
 
 4. Sacrifice/judgement transition
    - Add a lightweight transition after `选好了`.
@@ -92,4 +94,3 @@ rainy opening
 - `node scripts/audit-content-review.js` passes.
 - `node scripts/validate-assets.js` passes.
 - `node -c app.js` passes.
-

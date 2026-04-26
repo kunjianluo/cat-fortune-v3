@@ -22,8 +22,12 @@ const els = {
   introContinueBtn: document.getElementById("intro-continue-btn"),
   startScreen: document.getElementById("start-screen"),
   issueButtons: document.getElementById("issue-buttons"),
+  issuePlayScreen: document.getElementById("issue-play-screen"),
+  issueTitle: document.getElementById("issue-play-title"),
+  issueShopAnchor: document.getElementById("issue-shop-anchor"),
   catMaster: document.getElementById("cat-master"),
   riddleBox: document.getElementById("riddle-box"),
+  shopUi: document.getElementById("shop-ui"),
   shopTabs: document.getElementById("shop-tabs"),
   ingredients: document.getElementById("ingredients"),
   sacrificeSlots: [
@@ -247,10 +251,15 @@ function showSeedSelection() {
   state.currentIssueId = null;
   state.currentSeedIssueId = null;
   state.selectedSlots = [null, null];
+  els.issueTitle.textContent = "选一个你此刻的心结";
+  els.issueShopAnchor.textContent = "店铺还没亮灯";
   els.riddleBox.textContent = "选一个你此刻的心结，猫大师才肯开口。";
   els.feedback.textContent = "";
   els.shopTabs.innerHTML = "";
   els.ingredients.innerHTML = "";
+  delete els.shopUi.dataset.shopId;
+  delete els.shopUi.dataset.shopAssetId;
+  delete els.shopUi.dataset.shopkeeperAssetId;
   updateSacrificeSlots();
   resetMoodCardSelection();
   setScreen("seed_selection");
@@ -276,23 +285,82 @@ function uniqueIngredientIds(ingredientIds) {
   return Array.from(new Set(ingredientIds.filter(Boolean)));
 }
 
+function getShopSceneAssetId(shopId) {
+  const assetIds = {
+    "dessert-station": "shop-bg-dessert-night",
+    "ice-room": "shop-bg-tea-night",
+    "street-stall": "shop-bg-noodle-night",
+  };
+  return assetIds[shopId] || "";
+}
+
+function getShopkeeperAssetId(shopId) {
+  const assetIds = {
+    "dessert-station": "shopkeeper-dessert-idle",
+    "ice-room": "shopkeeper-tea-idle",
+    "street-stall": "shopkeeper-noodle-idle",
+  };
+  return assetIds[shopId] || "";
+}
+
 function renderShopDisplay() {
   els.shopTabs.innerHTML = "";
   const { shop } = getCurrentPlayContext();
   if (!shop) return;
 
+  const shopSceneAssetId = getShopSceneAssetId(shop.id);
+  const shopkeeperAssetId = getShopkeeperAssetId(shop.id);
+  els.shopUi.dataset.shopId = shop.id;
+  els.shopUi.dataset.shopAssetId = shopSceneAssetId;
+  els.shopUi.dataset.shopkeeperAssetId = shopkeeperAssetId;
+
   const card = document.createElement("div");
   card.className = "shop-card";
+  card.dataset.shopId = shop.id;
+  card.dataset.shopAssetId = shopSceneAssetId;
+  card.dataset.shopkeeperAssetId = shopkeeperAssetId;
+
+  const signboard = document.createElement("div");
+  signboard.className = "shop-signboard";
+  const signKicker = document.createElement("div");
+  signKicker.className = "shop-sign-kicker";
+  signKicker.textContent = shop.short_name || "深夜铺位";
   const name = document.createElement("div");
   name.className = "shop-name";
   name.textContent = shop.name;
+  signboard.append(signKicker, name);
+
+  const interior = document.createElement("div");
+  interior.className = "shop-interior-identity";
+
+  const copy = document.createElement("div");
+  copy.className = "shop-copy";
   const desc = document.createElement("div");
   desc.className = "shop-desc";
   desc.textContent = shop.description;
   const meta = document.createElement("div");
   meta.className = "shop-meta";
   meta.textContent = `店员：${shop.npc} / 门型：${shop.door_type}`;
-  card.append(name, desc, meta);
+  copy.append(desc, meta);
+
+  const shopkeeper = document.createElement("div");
+  shopkeeper.className = "shopkeeper-placeholder";
+  shopkeeper.dataset.shopkeeperAssetId = shopkeeperAssetId;
+  shopkeeper.setAttribute("aria-label", `${shop.npc || "店员猫"}占位符`);
+  const shopkeeperCat = document.createElement("div");
+  shopkeeperCat.className = "shopkeeper-cat";
+  shopkeeperCat.setAttribute("aria-hidden", "true");
+  shopkeeperCat.textContent = "🐱";
+  const shopkeeperNote = document.createElement("div");
+  shopkeeperNote.className = "shopkeeper-note";
+  shopkeeperNote.textContent = "店员猫暂时用占位符，未来替换为素材";
+  const shopkeeperDesc = document.createElement("div");
+  shopkeeperDesc.className = "shopkeeper-desc";
+  shopkeeperDesc.textContent = shop.npc_description || "正在柜台后面眯眼值班。";
+  shopkeeper.append(shopkeeperCat, shopkeeperNote, shopkeeperDesc);
+
+  interior.append(copy, shopkeeper);
+  card.append(signboard, interior);
   els.shopTabs.appendChild(card);
 }
 
@@ -309,6 +377,8 @@ function renderIngredients() {
     const button = document.createElement("button");
     button.className = "ingredient";
     button.type = "button";
+    button.setAttribute("aria-label", ingredient.description ? `选择${ingredient.name}：${ingredient.description}` : `选择${ingredient.name}`);
+    button.title = ingredient.description || ingredient.name;
     const name = document.createElement("span");
     name.className = "ingredient-name";
     name.textContent = ingredient.name;
@@ -342,7 +412,10 @@ function startGame(issueId) {
   setScreen("issue_play");
   const riddle = issue.riddle_text || seedIssue.riddle_text || "猫大师今天只眯着眼，不肯把谜面说完整。";
   const shop = getShopById(seedIssue.shop_id || issue.shop_id);
-  els.riddleBox.textContent = `当前心结：${seedIssue.title}\n${riddle}\n去 ${shop?.name || seedIssue.shop_name} 选择两味食材献祭。`;
+  const shopName = shop?.name || seedIssue.shop_name || "深夜小店";
+  els.issueTitle.textContent = seedIssue.title;
+  els.issueShopAnchor.textContent = `前往 ${shopName}，选择两味食材献祭。`;
+  els.riddleBox.textContent = riddle;
   els.feedback.textContent = "";
 
   renderShopDisplay();

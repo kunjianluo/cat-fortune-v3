@@ -46,26 +46,50 @@
       </div>
     </div>
 
-    <div id="cat-master" aria-hidden="true">🐱</div>
-    <div id="riddle-box">选一个你此刻的心结，猫大师才肯开口。</div>
-
-    <div id="shop-ui">
-      <div class="shop-tabs" id="shop-tabs"></div>
-      <div id="ingredients" class="ingredient-grid"></div>
-      <div class="hint-text">（提示：点击食材放入献祭槽；点击槽位可以取回）</div>
-      <div id="sacrifice-area" class="sacrifice-area" aria-live="polite">
-        <button class="sacrifice-slot" id="sacrifice-slot-0" type="button" data-slot-index="0">
-          <span class="slot-label">献祭槽 1</span>
-          <span class="slot-value">等待食材</span>
-        </button>
-        <button class="sacrifice-slot" id="sacrifice-slot-1" type="button" data-slot-index="1">
-          <span class="slot-label">献祭槽 2</span>
-          <span class="slot-value">等待食材</span>
-        </button>
+    <section id="issue-play-screen" class="issue-play-screen" aria-labelledby="issue-play-title">
+      <div class="issue-brief-card">
+        <div id="cat-master" class="issue-brief-cat" aria-hidden="true">🐱</div>
+        <div class="issue-brief-copy">
+          <div class="issue-brief-eyebrow">猫大师听见了</div>
+          <h3 id="issue-play-title" class="issue-title">选一个你此刻的心结</h3>
+          <div id="issue-shop-anchor" class="issue-shop-anchor">店铺还没亮灯</div>
+          <p id="riddle-box" class="issue-riddle">选一个你此刻的心结，猫大师才肯开口。</p>
+        </div>
       </div>
-      <button class="issue-btn submit-btn" id="submit-btn" type="button" aria-disabled="true">选好了</button>
-      <div id="feedback" class="feedback" aria-live="polite"></div>
-    </div>
+
+      <div id="shop-ui" class="shop-interior-panel">
+        <div class="shop-atmosphere" aria-hidden="true"></div>
+        <div class="shop-tabs" id="shop-tabs"></div>
+
+        <div class="ingredient-rack-shell">
+          <div class="rack-heading">
+            <span class="rack-title">食材架</span>
+            <span class="rack-note">点两味，放上柜台</span>
+          </div>
+          <div id="ingredients" class="ingredient-grid ingredient-rack"></div>
+        </div>
+
+        <div id="sacrifice-counter" class="sacrifice-counter">
+          <div class="counter-heading">
+            <span class="counter-title">献祭柜台</span>
+            <span class="counter-note">点击槽位可取回</span>
+          </div>
+          <div class="hint-text">食材放满两格后，按柜台铃交给猫大师。</div>
+          <div id="sacrifice-area" class="sacrifice-area" aria-live="polite">
+            <button class="sacrifice-slot" id="sacrifice-slot-0" type="button" data-slot-index="0">
+              <span class="slot-label">献祭槽 1</span>
+              <span class="slot-value">等待食材</span>
+            </button>
+            <button class="sacrifice-slot" id="sacrifice-slot-1" type="button" data-slot-index="1">
+              <span class="slot-label">献祭槽 2</span>
+              <span class="slot-value">等待食材</span>
+            </button>
+          </div>
+          <button class="issue-btn submit-btn" id="submit-btn" type="button" aria-disabled="true">按铃：选好了</button>
+          <div id="feedback" class="feedback" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
   </div>
 
   <div id="overlay" class="result-overlay" role="dialog" aria-modal="true" aria-labelledby="food-name">
