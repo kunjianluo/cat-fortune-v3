@@ -55,6 +55,8 @@ V3 focuses on immersive demo polish around the existing loop. The priorities are
 - Result card polish
 - Image/audio/sprite placeholders
 
+The five seed issue choices are now presented as lightweight mood cards. This is the first step toward the 0424 PRD card-selection direction, while full multi-level card selection remains future work.
+
 V3 does not yet implement:
 
 - Full 40-issue public card system

@@ -414,8 +414,8 @@ for (const issue of issues) {
 const csvFiles = allCsvFiles();
 const runtimeData = {
   meta: {
-    project_id: "cat-fortune-v2",
-    data_version: "csv-runtime-v2-seed-entry",
+    project_id: "cat-fortune-v3",
+    data_version: "csv-runtime-v3-seed-entry",
     generated_at: new Date().toISOString(),
     generated_by: "scripts/compile-csv-to-runtime.js",
     source_dir: "cat_fortune_csv_exports",

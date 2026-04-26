@@ -149,16 +149,78 @@ function resetSelection(message = "") {
   els.feedback.textContent = message;
 }
 
+function getMoodCardSubtitle(seedIssue) {
+  if (seedIssue.subtitle) return seedIssue.subtitle;
+  if (seedIssue.mood_subtitle) return seedIssue.mood_subtitle;
+  if (seedIssue.ui_subtitle) return seedIssue.ui_subtitle;
+
+  const title = seedIssue.title || "";
+  if (title.includes("Deadline")) return "雨夜赶工，心跳比霓虹还急。";
+  if (title.includes("嫉妒")) return "别人的光太亮，自己的胃有点酸。";
+  if (title.includes("短板")) return "把不够好的地方，先放到猫爪边。";
+  if (title.includes("熬夜")) return "越困越清醒，像一盏不肯灭的灯。";
+  if (title.includes("倒霉")) return "坏运气黏在鞋底，等一阵热气冲散。";
+  return "把今晚说不出口的心结，交给猫大师闻闻。";
+}
+
+function getMoodCardSymbol(seedIssue, index) {
+  const title = seedIssue.title || "";
+  if (title.includes("Deadline")) return "☕";
+  if (title.includes("嫉妒")) return "✦";
+  if (title.includes("短板")) return "◐";
+  if (title.includes("熬夜")) return "☾";
+  if (title.includes("倒霉")) return "◇";
+  return ["✦", "☾", "◇", "◐", "☕"][index % 5];
+}
+
+function resetMoodCardSelection() {
+  els.issueButtons.querySelectorAll(".mood-card").forEach((card) => {
+    card.classList.remove("is-selected");
+    card.disabled = false;
+    card.setAttribute("aria-pressed", "false");
+  });
+}
+
+function selectMoodCard(card, issueId) {
+  els.issueButtons.querySelectorAll(".mood-card").forEach((item) => {
+    item.classList.toggle("is-selected", item === card);
+    item.disabled = true;
+    item.setAttribute("aria-pressed", item === card ? "true" : "false");
+  });
+
+  window.setTimeout(() => startGame(issueId), 180);
+}
+
 function renderIssueButtons() {
   els.issueButtons.innerHTML = "";
 
-  state.data.seed_issues.forEach((seedIssue) => {
+  state.data.seed_issues.forEach((seedIssue, index) => {
     const button = document.createElement("button");
-    button.className = "issue-btn";
+    button.className = "mood-card";
     button.type = "button";
     button.dataset.issueId = seedIssue.issue_id;
-    button.textContent = seedIssue.title;
-    button.addEventListener("click", () => startGame(seedIssue.issue_id));
+    button.setAttribute("aria-pressed", "false");
+    button.setAttribute("aria-label", `选择心结：${seedIssue.title}`);
+
+    const symbol = document.createElement("span");
+    symbol.className = "mood-card-symbol";
+    symbol.setAttribute("aria-hidden", "true");
+    symbol.textContent = getMoodCardSymbol(seedIssue, index);
+
+    const content = document.createElement("span");
+    content.className = "mood-card-content";
+
+    const title = document.createElement("span");
+    title.className = "mood-card-title";
+    title.textContent = seedIssue.title;
+
+    const subtitle = document.createElement("span");
+    subtitle.className = "mood-card-subtitle";
+    subtitle.textContent = getMoodCardSubtitle(seedIssue);
+
+    content.append(title, subtitle);
+    button.append(symbol, content);
+    button.addEventListener("click", () => selectMoodCard(button, seedIssue.issue_id));
     els.issueButtons.appendChild(button);
   });
 }
@@ -190,6 +252,7 @@ function showSeedSelection() {
   els.shopTabs.innerHTML = "";
   els.ingredients.innerHTML = "";
   updateSacrificeSlots();
+  resetMoodCardSelection();
   setScreen("seed_selection");
 }
 

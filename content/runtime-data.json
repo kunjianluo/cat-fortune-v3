@@ -1,8 +1,8 @@
 {
   "meta": {
-    "project_id": "cat-fortune-v2",
-    "data_version": "csv-runtime-v2-seed-entry",
-    "generated_at": "2026-04-26T08:14:39.511Z",
+    "project_id": "cat-fortune-v3",
+    "data_version": "csv-runtime-v3-seed-entry",
+    "generated_at": "2026-04-26T08:33:48.146Z",
     "generated_by": "scripts/compile-csv-to-runtime.js",
     "source_dir": "cat_fortune_csv_exports",
     "source_files": [
