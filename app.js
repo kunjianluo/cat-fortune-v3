@@ -6,6 +6,7 @@ const state = {
   currentSeedIssueId: null,
   selectedSlots: [null, null],
   activeResultType: null,
+  isJudging: false,
 };
 
 const introLines = [
@@ -36,6 +37,7 @@ const els = {
   ],
   submitBtn: document.getElementById("submit-btn"),
   feedback: document.getElementById("feedback"),
+  judgementOverlay: document.getElementById("judgement-overlay"),
   overlay: document.getElementById("overlay"),
   resultCard: document.getElementById("result-card"),
   resultEyebrow: document.getElementById("result-eyebrow"),
@@ -136,7 +138,8 @@ function updateSacrificeSlots() {
   });
 
   els.submitBtn.classList.toggle("ready", filledCount === 2);
-  els.submitBtn.setAttribute("aria-disabled", filledCount === 2 ? "false" : "true");
+  els.submitBtn.disabled = state.isJudging;
+  els.submitBtn.setAttribute("aria-disabled", filledCount === 2 && !state.isJudging ? "false" : "true");
 }
 
 function animateCat() {
@@ -251,6 +254,8 @@ function showSeedSelection() {
   state.currentIssueId = null;
   state.currentSeedIssueId = null;
   state.selectedSlots = [null, null];
+  state.isJudging = false;
+  hideJudgementOverlay(true);
   els.issueTitle.textContent = "选一个你此刻的心结";
   els.issueShopAnchor.textContent = "店铺还没亮灯";
   els.riddleBox.textContent = "选一个你此刻的心结，猫大师才肯开口。";
@@ -408,6 +413,8 @@ function startGame(issueId) {
   state.currentIssueId = issueId;
   state.currentSeedIssueId = seedIssue.issue_id;
   state.selectedSlots = [null, null];
+  state.isJudging = false;
+  hideJudgementOverlay(true);
 
   setScreen("issue_play");
   const riddle = issue.riddle_text || seedIssue.riddle_text || "猫大师今天只眯着眼，不肯把谜面说完整。";
@@ -424,7 +431,7 @@ function startGame(issueId) {
 }
 
 function selectIngredient(ingredientId) {
-  if (!state.currentIssueId) return;
+  if (!state.currentIssueId || state.isJudging) return;
   animateCat();
 
   const openSlotIndex = state.selectedSlots.findIndex((slot) => !slot);
@@ -440,6 +447,7 @@ function selectIngredient(ingredientId) {
 }
 
 function clearSacrificeSlot(slotIndex) {
+  if (state.isJudging) return;
   if (!state.selectedSlots[slotIndex]) return;
   state.selectedSlots[slotIndex] = null;
   els.feedback.textContent = "";
@@ -461,14 +469,28 @@ function pickNonsenseSlip() {
   return slips[index].text;
 }
 
-function submitSelection() {
-  const issue = getIssueById(state.currentIssueId);
-  const selectedIngredientIds = filledSlotIds();
-  if (!issue || selectedIngredientIds.length !== 2) {
-    els.feedback.textContent = "食材还不充足哦";
+function showJudgementOverlay() {
+  els.judgementOverlay.hidden = false;
+  window.requestAnimationFrame(() => {
+    els.judgementOverlay.classList.add("is-visible");
+  });
+}
+
+function hideJudgementOverlay(immediate = false) {
+  els.judgementOverlay.classList.remove("is-visible");
+  if (immediate) {
+    els.judgementOverlay.hidden = true;
     return;
   }
 
+  window.setTimeout(() => {
+    if (!els.judgementOverlay.classList.contains("is-visible")) {
+      els.judgementOverlay.hidden = true;
+    }
+  }, 180);
+}
+
+function judgeSelection(issue, selectedIngredientIds) {
   const recipe = issue.recipe_ingredient_ids;
   if (recipeMatches(selectedIngredientIds, recipe)) {
     const wisdom = getWisdomById(issue.success_wisdom_id);
@@ -505,6 +527,29 @@ function submitSelection() {
     icon: "📜",
     actionLabel: "撕掉",
   });
+}
+
+function submitSelection() {
+  if (state.isJudging) return;
+
+  const issue = getIssueById(state.currentIssueId);
+  const selectedIngredientIds = filledSlotIds();
+  if (!issue || selectedIngredientIds.length !== 2) {
+    els.feedback.textContent = "食材还不充足哦";
+    return;
+  }
+
+  state.isJudging = true;
+  els.feedback.textContent = "";
+  updateSacrificeSlots();
+  showJudgementOverlay();
+
+  window.setTimeout(() => {
+    state.isJudging = false;
+    hideJudgementOverlay();
+    updateSacrificeSlots();
+    judgeSelection(issue, selectedIngredientIds);
+  }, 1000);
 }
 
 function showResult(result) {

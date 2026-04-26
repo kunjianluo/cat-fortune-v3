@@ -61,6 +61,8 @@ The issue play screen now has lightweight shop-interior polish: an issue brief, 
 
 The shop-interior play screen has also been compacted for one-screen demo usability on desktop, with internal scrolling allowed for dense ingredient racks.
 
+Submitting a full sacrifice now enters a lightweight judgement transition before showing the result. Richer smoke, ingredient collision, and audio effects remain future work.
+
 V3 does not yet implement:
 
 - Full 40-issue public card system

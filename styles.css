@@ -886,6 +886,57 @@ body {
   font-size: 13px;
 }
 
+.judgement-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.68);
+  opacity: 0;
+  pointer-events: none;
+  text-align: center;
+  transition: opacity 0.18s ease;
+}
+
+.judgement-overlay.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.judgement-overlay[hidden] {
+  display: none;
+}
+
+.judgement-card {
+  width: min(100%, 360px);
+  border: 2px solid rgba(241, 196, 15, 0.82);
+  background:
+    radial-gradient(circle at 50% 0%, rgba(77, 231, 255, 0.16), transparent 42%),
+    linear-gradient(180deg, rgba(22, 15, 34, 0.98), rgba(7, 8, 16, 0.98));
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.06),
+    0 0 30px rgba(241, 196, 15, 0.2);
+  padding: 22px 20px;
+}
+
+.judgement-cat {
+  font-size: 48px;
+  line-height: 1;
+  margin-bottom: 12px;
+  filter: drop-shadow(0 0 14px rgba(241, 196, 15, 0.34));
+}
+
+.judgement-text {
+  margin: 0;
+  color: #fff8d8;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 1.65;
+}
+
 .result-overlay {
   position: fixed;
   inset: 0;
