@@ -252,7 +252,7 @@ body {
 
 #header {
   text-align: center;
-  padding: 20px;
+  padding: 14px 20px;
   width: 100%;
   background: rgba(0, 0, 0, 0.3);
   border-bottom: var(--pixel-border);
@@ -276,7 +276,7 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 24px 16px 40px;
+  padding: 16px 16px 28px;
 }
 
 #start-screen {
@@ -437,17 +437,17 @@ body {
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 12px;
   align-items: center;
 }
 
 .issue-brief-card {
-  width: min(100%, 860px);
+  width: min(100%, 900px);
   display: grid;
-  grid-template-columns: 112px minmax(0, 1fr);
-  gap: 18px;
+  grid-template-columns: 76px minmax(0, 1fr);
+  gap: 12px;
   align-items: center;
-  padding: 18px;
+  padding: 12px 14px;
   border: 2px solid rgba(77, 231, 255, 0.46);
   background:
     linear-gradient(90deg, rgba(255, 79, 216, 0.12), transparent 36%),
@@ -459,7 +459,7 @@ body {
 
 .issue-brief-cat,
 #cat-master {
-  font-size: 80px;
+  font-size: 58px;
   margin-bottom: 0;
   text-align: center;
   filter: drop-shadow(0 0 18px rgba(241, 196, 15, 0.3));
@@ -478,9 +478,9 @@ body {
 }
 
 .issue-title {
-  margin: 4px 0 4px;
+  margin: 2px 0;
   color: #fff8d8;
-  font-size: 24px;
+  font-size: 21px;
   line-height: 1.25;
   letter-spacing: 0;
   text-shadow:
@@ -489,7 +489,7 @@ body {
 }
 
 .issue-shop-anchor {
-  margin-bottom: 10px;
+  margin-bottom: 6px;
   color: var(--shop-gold);
 }
 
@@ -498,10 +498,12 @@ body {
   margin: 0;
   background: rgba(255, 248, 225, 0.96);
   color: #262015;
-  padding: 14px 16px;
+  padding: 10px 12px;
   border: 3px solid #090909;
   width: 100%;
-  min-height: 74px;
+  min-height: 54px;
+  max-height: 76px;
+  overflow: auto;
   position: relative;
   font-weight: bold;
   line-height: 1.5;
@@ -520,15 +522,16 @@ body {
 }
 
 #shop-ui {
-  width: min(100%, 900px);
+  width: min(100%, 940px);
 }
 
 .shop-interior-panel {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  padding: 18px;
+  display: grid;
+  grid-template-columns: minmax(250px, 0.72fr) minmax(0, 1.28fr);
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 12px;
+  padding: 12px;
   border: 2px solid rgba(241, 196, 15, 0.64);
   background:
     linear-gradient(180deg, rgba(48, 14, 34, 0.2), rgba(5, 8, 19, 0.88)),
@@ -552,17 +555,18 @@ body {
 .shop-tabs {
   position: relative;
   display: block;
+  min-width: 0;
 }
 
 .shop-card {
   display: grid;
-  grid-template-columns: minmax(190px, 250px) minmax(0, 1fr);
-  gap: 16px;
+  grid-template-columns: 1fr;
+  gap: 10px;
   align-items: stretch;
 }
 
 .shop-signboard {
-  min-height: 132px;
+  min-height: 76px;
   border: 3px solid rgba(241, 196, 15, 0.9);
   background:
     linear-gradient(180deg, rgba(55, 8, 46, 0.92), rgba(14, 10, 24, 0.96));
@@ -572,7 +576,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 16px;
+  padding: 10px;
   text-align: center;
 }
 
@@ -585,7 +589,7 @@ body {
 
 .shop-name {
   color: #fff8d8;
-  font-size: 28px;
+  font-size: 23px;
   font-weight: bold;
   line-height: 1.2;
   text-shadow:
@@ -595,8 +599,8 @@ body {
 
 .shop-interior-identity {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(154px, 190px);
-  gap: 14px;
+  grid-template-columns: minmax(0, 1fr) 104px;
+  gap: 8px;
   align-items: stretch;
 }
 
@@ -604,7 +608,7 @@ body {
 .shopkeeper-placeholder {
   border: 1px solid rgba(77, 231, 255, 0.35);
   background: rgba(0, 0, 0, 0.28);
-  padding: 14px;
+  padding: 10px;
 }
 
 .shop-copy {
@@ -615,9 +619,9 @@ body {
 
 .shop-desc,
 .shop-meta {
-  margin-top: 6px;
-  font-size: 13px;
-  line-height: 1.4;
+  margin-top: 4px;
+  font-size: 12px;
+  line-height: 1.35;
 }
 
 .shop-meta {
@@ -629,28 +633,28 @@ body {
   flex-direction: column;
   justify-content: center;
   text-align: center;
-  min-height: 132px;
+  min-height: 92px;
   box-shadow: inset 0 0 18px rgba(77, 231, 255, 0.1);
 }
 
 .shopkeeper-cat {
-  font-size: 42px;
+  font-size: 30px;
   line-height: 1;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
   filter: drop-shadow(0 0 12px rgba(241, 196, 15, 0.34));
 }
 
 .shopkeeper-note {
   color: var(--shop-gold);
-  font-size: 12px;
-  line-height: 1.4;
+  font-size: 10px;
+  line-height: 1.3;
 }
 
 .shopkeeper-desc {
-  margin-top: 8px;
+  margin-top: 5px;
   color: #d2d2d2;
-  font-size: 11px;
-  line-height: 1.45;
+  font-size: 10px;
+  line-height: 1.3;
 }
 
 .ingredient-rack-shell,
@@ -658,7 +662,15 @@ body {
   position: relative;
   border: 1px solid rgba(241, 196, 15, 0.42);
   background: rgba(0, 0, 0, 0.24);
-  padding: 14px;
+  padding: 10px;
+}
+
+.ingredient-rack-shell {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .rack-heading,
@@ -667,13 +679,13 @@ body {
   align-items: baseline;
   justify-content: space-between;
   gap: 12px;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .rack-title,
 .counter-title {
   color: var(--shop-gold);
-  font-size: 16px;
+  font-size: 15px;
   font-weight: bold;
   text-shadow: 0 0 10px rgba(241, 196, 15, 0.36);
 }
@@ -689,13 +701,18 @@ body {
 .ingredient-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
+  gap: 10px;
 }
 
 .ingredient-rack {
   background:
     linear-gradient(180deg, rgba(126, 74, 33, 0.28), rgba(39, 20, 13, 0.42));
-  padding: 12px;
+  flex: 1;
+  min-height: 0;
+  max-height: clamp(230px, calc(100vh - 390px), 360px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 10px;
   border: 2px solid rgba(93, 56, 30, 0.88);
   box-shadow:
     inset 0 12px 0 rgba(255, 255, 255, 0.035),
@@ -706,7 +723,7 @@ body {
   background:
     linear-gradient(180deg, rgba(255, 250, 229, 0.98), rgba(243, 223, 169, 0.96));
   color: #21170c;
-  min-height: 104px;
+  min-height: 82px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -716,7 +733,7 @@ body {
   font-size: 12px;
   font-weight: bold;
   text-align: center;
-  padding: 10px;
+  padding: 8px;
   box-shadow:
     0 4px 0 rgba(50, 25, 10, 0.72),
     inset 0 0 0 1px rgba(255, 255, 255, 0.45);
@@ -724,19 +741,23 @@ body {
 }
 
 .ingredient-name {
-  font-size: 16px;
+  font-size: 14px;
   line-height: 1.25;
 }
 
 .ingredient-desc {
-  margin-top: 6px;
-  font-size: 11px;
-  line-height: 1.35;
+  margin-top: 4px;
+  font-size: 10px;
+  line-height: 1.3;
   font-weight: normal;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .ingredient-count {
-  margin-top: 6px;
+  margin-top: 4px;
   color: #8b2f00;
 }
 
@@ -760,20 +781,32 @@ body {
 }
 
 .hint-text {
-  margin-bottom: 10px;
+  margin: 0;
+  grid-column: 1 / -1;
   text-align: left;
-  font-size: 12px;
+  font-size: 11px;
   color: #b7b7b7;
+}
+
+.sacrifice-counter {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 8px 10px;
+}
+
+.counter-heading {
+  grid-column: 1 / -1;
 }
 
 .sacrifice-area {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
+  gap: 8px;
 }
 
 .sacrifice-slot {
-  min-height: 76px;
+  min-height: 58px;
   background:
     linear-gradient(180deg, rgba(21, 14, 8, 0.82), rgba(7, 8, 14, 0.86));
   border: 2px dashed rgba(241, 196, 15, 0.68);
@@ -783,7 +816,7 @@ body {
   flex-direction: column;
   justify-content: center;
   gap: 6px;
-  padding: 10px 12px;
+  padding: 8px 10px;
   text-align: center;
   font: inherit;
   transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease, background 0.15s ease;
@@ -809,7 +842,7 @@ body {
 }
 
 .slot-value {
-  font-size: 16px;
+  font-size: 14px;
   font-weight: bold;
   line-height: 1.25;
 }
@@ -818,8 +851,8 @@ body {
   opacity: 0.58;
   align-self: flex-end;
   width: auto;
-  min-width: 156px;
-  margin-top: 12px;
+  min-width: 142px;
+  margin-top: 0;
   background: rgba(0, 0, 0, 0.34);
   box-shadow: inset 0 0 14px rgba(241, 196, 15, 0.08);
 }
@@ -846,7 +879,8 @@ body {
 }
 
 .feedback {
-  min-height: 24px;
+  grid-column: 1 / -1;
+  min-height: 18px;
   color: var(--shop-gold);
   text-align: center;
   font-size: 13px;
@@ -977,6 +1011,34 @@ body {
   color: var(--shop-gold);
 }
 
+@media (max-width: 760px) {
+  #game-container {
+    justify-content: flex-start;
+  }
+
+  .shop-interior-panel {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+  }
+
+  .ingredient-rack-shell {
+    grid-column: auto;
+    grid-row: auto;
+  }
+
+  .ingredient-rack {
+    max-height: min(44vh, 360px);
+  }
+
+  .sacrifice-counter {
+    grid-template-columns: 1fr;
+  }
+
+  .submit-btn {
+    width: 100%;
+  }
+}
+
 @media (max-width: 560px) {
   .neon-title {
     font-size: 40px;
@@ -1012,6 +1074,11 @@ body {
 
   .shop-interior-panel {
     padding: 12px;
+  }
+
+  .issue-riddle,
+  #riddle-box {
+    max-height: none;
   }
 
   .shop-name {

@@ -59,6 +59,8 @@ The five seed issue choices are now presented as lightweight mood cards. This is
 
 The issue play screen now has lightweight shop-interior polish: an issue brief, neon shop signboard, shopkeeper placeholder, ingredient rack, and sacrifice counter. Shopkeeper and scene image slots are placeholder-ready through asset hooks, while the full three-shop street scene and real image assets remain future work.
 
+The shop-interior play screen has also been compacted for one-screen demo usability on desktop, with internal scrolling allowed for dense ingredient racks.
+
 V3 does not yet implement:
 
 - Full 40-issue public card system
