@@ -120,6 +120,17 @@
     </section>
   </div>
 
+  <div id="shop-entry-overlay" class="shop-entry-overlay" role="status" aria-live="polite" hidden>
+    <div class="shop-entry-card">
+      <div id="shop-entry-sign" class="shop-entry-sign">深夜小店</div>
+      <div id="shop-entry-door" class="shop-entry-door" aria-hidden="true">
+        <span></span>
+        <span></span>
+      </div>
+      <div id="shop-entry-caption" class="shop-entry-caption">猫大师正在开门。</div>
+    </div>
+  </div>
+
   <div id="judgement-overlay" class="judgement-overlay" role="status" aria-live="polite" hidden>
     <div class="judgement-smoke" aria-hidden="true">
       <span></span>
@@ -150,6 +161,14 @@
       <h3 id="food-name">获得食物</h3>
       <p id="wisdom-text" class="result-text">猫咪智慧加载中...</p>
       <button class="issue-btn result-action-btn" id="result-action-btn" type="button">把智慧带走</button>
+    </div>
+  </div>
+
+  <div id="penalty-overlay" class="penalty-overlay" role="dialog" aria-modal="true" aria-labelledby="penalty-title" hidden>
+    <div id="penalty-card" class="penalty-card">
+      <h3 id="penalty-title" class="penalty-title">猫咪惩罚</h3>
+      <p id="penalty-instruction" class="penalty-instruction">猫大师正在判断这份失败的命数。</p>
+      <div id="penalty-stage" class="penalty-stage" aria-live="polite"></div>
     </div>
   </div>
 

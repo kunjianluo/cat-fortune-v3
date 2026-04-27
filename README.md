@@ -61,6 +61,10 @@ The issue play screen now has lightweight shop-interior polish: an issue brief, 
 
 The shop-interior play screen has also been compacted for one-screen demo usability on desktop, with internal scrolling allowed for dense ingredient racks.
 
+Stage 3 now adds lightweight shop-entry and shopkeeper interaction polish around the existing issue play screen. Selecting an issue briefly shows a shop-specific CSS entrance transition before play begins, and the placeholder shopkeeper cats now support default, hover/focus, click, and keyboard-triggered dialogue feedback without real NPC images or audio.
+
+Stage 3 also includes a lightweight three-way failure punishment baseline. Fully wrong sacrifices now route through weighted failure outcomes: the existing nonsense slip, clickable mud paw marks, or clickable/auto-closing cat hair allergy. These are CSS/text-only demo interactions; real assets, precise swipe gestures, and full cinematic punishment animations remain future work.
+
 Submitting a full sacrifice now enters a lightweight judgement transition before showing the result. Stage 1 now includes a judgement overlay, bell shake, glowing sacrifice slots, smoke/glow/flash polish, ingredient fusion cards, a cat silhouette placeholder, and safe SFX hooks for future audio assets, while full physics-style collision, real audio production, and final cat sprite judgement remain future work.
 
 Stage 2 card-selection is completed for the current demo baseline. The default five seed issues remain the main entry, and a separate expanded three-level emotional card-flow demo can be opened from the seed screen using only those five seed issues. The expanded flow now includes lightweight oracle-mode cat master ambience, star-circle/card-dealing polish, and a selected-issue light-orb transition into the existing issue play screen. Full 40-issue taxonomy, real cat sprites, real audio, and full cinematic PRD card animation remain future work.
@@ -69,7 +73,7 @@ V3 does not yet implement:
 
 - Full 40-issue public card system
 - Full collection book
-- Mud-paw/cat-hair interactions
+- Full cinematic mud-paw/cat-hair punishment interactions with real assets and precise gestures
 - Real LLM API
 - Backend database
 - Major framework migration
@@ -104,6 +108,7 @@ Implemented now:
 - Resolve the selected seed to its full issue by `issue_id`
 - Use two lightweight sacrifice slots: ingredient clicks fill empty slots, filled slots can be clicked to remove, and judging happens only after clicking `选好了`
 - Show lightweight PRD-aligned result overlays: success food wisdom card, half-success hint modal, and nonsense-slip failure modal
+- Route full failures through lightweight weighted punishments: nonsense slip, mud paw marks, or cat hair allergy
 - Show the available riddle, mapped shop, playable ingredients, success wisdom, half-success hints, failure slip, retry, and another-issue loop
 
 Intentionally left as future V2 hooks:
@@ -113,4 +118,4 @@ Intentionally left as future V2 hooks:
 - Complete three-shop street scene
 - Backpack opening, ingredient flying, smoke transition, and cat master silhouette judgement animations
 - Full food card animation, rotating gold rays, collection book persistence, and card collection UI
-- Mud-paw and cat-hair punishment interactions
+- Real-asset mud-paw/cat-hair punishment cinematics and precise swipe gesture handling

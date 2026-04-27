@@ -44,11 +44,15 @@ rainy opening
    - Full 40-issue taxonomy, real cat sprites, real audio, and full PRD cinematic card transition remain future work.
 
 3. Shop/interior visual polish
-   - Status: started.
+   - Status: completed for the current demo baseline.
    - Added lightweight issue brief, shop signboard, shopkeeper placeholder, ingredient rack, and sacrifice counter styling.
+   - Added shop-specific CSS entry transition before the existing issue play screen.
+   - Added lightweight shopkeeper NPC feedback: default lines, hover/focus hints, click cycling, and keyboard interaction.
+   - Added lightweight weighted three-way failure punishments: nonsense slip, mud paw marks, and cat hair allergy.
    - Placeholder hooks exist for shop backgrounds and shopkeeper sprites.
    - Ingredient presentation is improved without changing recipe judgement.
    - Shop inventory remains driven by runtime data.
+   - Real shop assets, real NPC images/audio, precise swipe gestures, and full cinematic punishment animations remain future work.
 
 4. Sacrifice/judgement transition
    - Status: completed for the current demo baseline.
@@ -60,9 +64,11 @@ rainy opening
    - Real audio files, final cat sprites, physics-style animation, and full PRD-level cinematic judgement remain future work.
 
 5. Result card polish
+   - Status: partially completed for the current demo baseline.
    - Improve success, half-success, and failure result presentation.
    - Add placeholder result-food card imagery.
    - Keep retry and return-to-issue-selection behavior.
+   - The current failure baseline includes lightweight playable penalties, while full PRD cinematic punishments remain future work.
 
 6. Deployment/demo polish
    - Verify static hosting behavior.
@@ -74,7 +80,7 @@ rainy opening
 
 - Do not implement the full 40-issue public card system.
 - Do not implement a full collection book.
-- Do not implement mud-paw or cat-hair punishment interactions.
+- Do not implement full cinematic mud-paw or cat-hair punishment interactions with real assets or precise gestures.
 - Do not connect a real LLM API.
 - Do not add a backend database.
 - Do not migrate to React, Vue, or another major framework.
@@ -93,7 +99,9 @@ rainy opening
 - Submitting with incomplete slots shows `食材还不充足哦`.
 - Correct pair shows the success result overlay.
 - One correct ingredient shows the half-success hint modal.
-- Wrong pair shows a random nonsense-slip failure modal.
+- Wrong pair routes through weighted lightweight failure punishment: nonsense slip, mud paw marks, or cat hair allergy.
+- Mud paw marks can be clicked away and then return to the same issue.
+- Cat hair strands can be clicked away or auto-close after the demo timer, then return to the same issue.
 - Retry returns to ingredient selection after half-success or failure.
 - Success can return to issue selection.
 - `node scripts/compile-csv-to-runtime.js` passes.

@@ -6,7 +6,12 @@ const state = {
   currentSeedIssueId: null,
   selectedSlots: [null, null],
   activeResultType: null,
+  activePenaltyType: null,
   isJudging: false,
+  isShopEntering: false,
+  isPenaltyFinishing: false,
+  shopEntryTimer: null,
+  catHairTimer: null,
   assetManifest: null,
   audioAssets: new Map(),
   audioCache: new Map(),
@@ -35,6 +40,60 @@ const cardFlowTiming = {
   selectedMs: 140,
   transitionMs: 140,
   orbMs: 430,
+};
+
+const FAILURE_PENALTY_FALLBACKS = [
+  { id: "nonsense-slip", weight_percent: 50 },
+  { id: "mud-paw", weight_percent: 25 },
+  { id: "cat-hair", weight_percent: 25 },
+];
+
+const penaltyItemPositions = {
+  "mud-paw": [
+    { left: "18%", top: "28%", rotate: "-18deg", scale: "1" },
+    { left: "64%", top: "24%", rotate: "14deg", scale: "0.92" },
+    { left: "34%", top: "58%", rotate: "8deg", scale: "1.08" },
+    { left: "76%", top: "62%", rotate: "-10deg", scale: "0.98" },
+  ],
+  "cat-hair": [
+    { left: "14%", top: "22%", rotate: "-24deg", scale: "1" },
+    { left: "38%", top: "18%", rotate: "18deg", scale: "0.9" },
+    { left: "68%", top: "24%", rotate: "-8deg", scale: "1.08" },
+    { left: "82%", top: "48%", rotate: "28deg", scale: "0.96" },
+    { left: "22%", top: "56%", rotate: "12deg", scale: "1.1" },
+    { left: "48%", top: "68%", rotate: "-16deg", scale: "0.94" },
+    { left: "72%", top: "74%", rotate: "8deg", scale: "1" },
+  ],
+};
+
+const SHOPKEEPER_LINES = {
+  "ice-room": {
+    default: "少冰？少熬夜才是真的。",
+    hover: "冰室猫眯起眼：苦的、甜的、醒的，都在这排架子上。",
+    click: [
+      "别盯着奶茶桶发呆，先选食材。",
+      "凌晨的冰室不收眼泪，只收配方。",
+      "你看起来需要热奶茶，也可能只是需要睡觉。",
+    ],
+  },
+  "street-stall": {
+    default: "别站着发呆，鱼蛋不会自己跳进碗里。",
+    hover: "大排档猫甩了甩毛巾：想转运，就别怕烟火气。",
+    click: [
+      "手快点，后面还有猫排队。",
+      "咖喱酱很辣，但有些心事更辣。",
+      "选错也没事，大不了猫大师嫌弃你一下。",
+    ],
+  },
+  "dessert-station": {
+    default: "甜的不能治百病，但能让你先坐一会儿。",
+    hover: "甜品站猫轻轻眨眼：软糯的东西，最适合接住深夜。",
+    click: [
+      "别急，糖水要慢慢等。",
+      "如果今晚睡不着，就先吃点温柔的。",
+      "有些答案，藏在椰浆和汤圆之间。",
+    ],
+  },
 };
 
 const DEMO_CARD_FLOW = [
@@ -167,6 +226,10 @@ const els = {
   ],
   submitBtn: document.getElementById("submit-btn"),
   feedback: document.getElementById("feedback"),
+  shopEntryOverlay: document.getElementById("shop-entry-overlay"),
+  shopEntrySign: document.getElementById("shop-entry-sign"),
+  shopEntryDoor: document.getElementById("shop-entry-door"),
+  shopEntryCaption: document.getElementById("shop-entry-caption"),
   judgementOverlay: document.getElementById("judgement-overlay"),
   judgementIngredientLeft: document.getElementById("judgement-ingredient-left"),
   judgementIngredientRight: document.getElementById("judgement-ingredient-right"),
@@ -177,6 +240,11 @@ const els = {
   foodName: document.getElementById("food-name"),
   wisdomText: document.getElementById("wisdom-text"),
   resultActionBtn: document.getElementById("result-action-btn"),
+  penaltyOverlay: document.getElementById("penalty-overlay"),
+  penaltyCard: document.getElementById("penalty-card"),
+  penaltyTitle: document.getElementById("penalty-title"),
+  penaltyInstruction: document.getElementById("penalty-instruction"),
+  penaltyStage: document.getElementById("penalty-stage"),
 };
 
 async function loadGameData() {
@@ -317,6 +385,155 @@ function setScreen(screen) {
   els.cardFlowPanel.hidden = !isCardFlowScreen;
   els.cardFlowPanel.classList.toggle("is-oracle-mode", isCardFlowScreen);
   els.overlay.style.display = screen === "result" ? "flex" : "none";
+}
+
+function getShopEntryVariant(shopId) {
+  const variants = {
+    "ice-room": {
+      className: "ice-room",
+      caption: "冷气一开，夜晚暂时安静下来。",
+    },
+    "street-stall": {
+      className: "street-stall",
+      caption: "油烟和霓虹一起翻涌，猫大师朝你挥了挥爪。",
+    },
+    "dessert-station": {
+      className: "dessert-station",
+      caption: "甜味从玻璃门后慢慢漫出来。",
+    },
+  };
+
+  return variants[shopId] || {
+    className: "unknown-shop",
+    caption: "猫大师把小店的灯慢慢点亮。",
+  };
+}
+
+function showShopEntryTransition(shop) {
+  const variant = getShopEntryVariant(shop?.id || "");
+  els.shopEntrySign.textContent = shop?.name || "深夜小店";
+  els.shopEntryCaption.textContent = variant.caption;
+  els.shopEntryOverlay.className = `shop-entry-overlay ${variant.className}`;
+  els.shopEntryOverlay.hidden = false;
+  window.requestAnimationFrame(() => {
+    els.shopEntryOverlay.classList.add("is-visible");
+  });
+}
+
+function hideShopEntryTransition(immediate = false) {
+  els.shopEntryOverlay.classList.remove("is-visible");
+  if (immediate) {
+    els.shopEntryOverlay.hidden = true;
+    return;
+  }
+
+  window.setTimeout(() => {
+    if (!els.shopEntryOverlay.classList.contains("is-visible")) {
+      els.shopEntryOverlay.hidden = true;
+    }
+  }, 180);
+}
+
+function getFailurePenaltyOptions() {
+  const runtimePenalties = Array.isArray(state.data?.failure_penalties)
+    ? state.data.failure_penalties
+    : [];
+  const allowedIds = new Set(FAILURE_PENALTY_FALLBACKS.map((penalty) => penalty.id));
+  const options = runtimePenalties
+    .filter((penalty) => allowedIds.has(penalty.id))
+    .map((penalty) => ({
+      id: penalty.id,
+      weight_percent: Number(penalty.weight_percent) || 0,
+    }))
+    .filter((penalty) => penalty.weight_percent > 0);
+
+  return options.length ? options : FAILURE_PENALTY_FALLBACKS;
+}
+
+function selectFailurePenalty() {
+  const options = getFailurePenaltyOptions();
+  const totalWeight = options.reduce((sum, penalty) => sum + penalty.weight_percent, 0);
+  let roll = Math.random() * totalWeight;
+
+  for (const penalty of options) {
+    roll -= penalty.weight_percent;
+    if (roll <= 0) return penalty.id;
+  }
+
+  return options[0]?.id || "nonsense-slip";
+}
+
+function hidePenaltyOverlay() {
+  els.penaltyOverlay.classList.remove("is-visible", "mud-paw", "cat-hair");
+  els.penaltyOverlay.hidden = true;
+  els.penaltyStage.innerHTML = "";
+}
+
+function clearCatHairTimer() {
+  if (!state.catHairTimer) return;
+  window.clearTimeout(state.catHairTimer);
+  state.catHairTimer = null;
+}
+
+function finishFailurePenalty() {
+  if (state.isPenaltyFinishing) return;
+  state.isPenaltyFinishing = true;
+  clearCatHairTimer();
+  hidePenaltyOverlay();
+  state.activePenaltyType = null;
+  state.screen = "issue_play";
+  resetSelection("已清空托盘，可以重新选择两味食材。");
+}
+
+function showPenaltyOverlay(type, title, instruction) {
+  state.activePenaltyType = type;
+  state.isPenaltyFinishing = false;
+  state.screen = "failure_penalty";
+  els.penaltyTitle.textContent = title;
+  els.penaltyInstruction.textContent = instruction;
+  els.penaltyStage.innerHTML = "";
+  els.penaltyOverlay.className = `penalty-overlay ${type}`;
+  els.penaltyCard.className = `penalty-card ${type}`;
+  els.penaltyOverlay.hidden = false;
+  window.requestAnimationFrame(() => {
+    els.penaltyOverlay.classList.add("is-visible");
+  });
+}
+
+function handlePenaltyItemClick(item) {
+  if (state.isPenaltyFinishing || item.classList.contains("is-cleared")) return;
+  playSfx("click");
+  item.classList.add("is-cleared");
+  item.disabled = true;
+
+  const remainingItems = els.penaltyStage.querySelectorAll(".penalty-item:not(.is-cleared)");
+  if (!remainingItems.length) {
+    finishFailurePenalty();
+  }
+}
+
+function createPenaltyItem(type, text, position, index) {
+  const item = document.createElement("button");
+  item.className = `penalty-item ${type === "mud-paw" ? "mud-paw-mark" : "cat-hair-strand"}`;
+  item.type = "button";
+  item.textContent = text;
+  item.style.left = position.left;
+  item.style.top = position.top;
+  item.style.setProperty("--penalty-rotate", position.rotate);
+  item.style.setProperty("--penalty-scale", position.scale);
+  item.style.setProperty("--penalty-index", index);
+  item.setAttribute("aria-label", type === "mud-paw" ? "擦掉猫爪印" : "赶走猫毛");
+  item.addEventListener("click", () => handlePenaltyItemClick(item));
+  return item;
+}
+
+function renderPenaltyItems(type, text, positions) {
+  const field = document.createElement("div");
+  field.className = `penalty-field ${type}`;
+  positions.forEach((position, index) => {
+    field.appendChild(createPenaltyItem(type, text, position, index));
+  });
+  els.penaltyStage.appendChild(field);
 }
 
 function filledSlotIds() {
@@ -700,6 +917,16 @@ function continueIntro() {
 }
 
 function showSeedSelection() {
+  if (state.shopEntryTimer) {
+    window.clearTimeout(state.shopEntryTimer);
+    state.shopEntryTimer = null;
+  }
+  clearCatHairTimer();
+  state.isShopEntering = false;
+  state.isPenaltyFinishing = false;
+  state.activePenaltyType = null;
+  hideShopEntryTransition(true);
+  hidePenaltyOverlay();
   state.currentIssueId = null;
   state.currentSeedIssueId = null;
   state.selectedSlots = [null, null];
@@ -760,6 +987,23 @@ function getShopkeeperAssetId(shopId) {
   return assetIds[shopId] || "";
 }
 
+function getShopkeeperLines(shopId) {
+  return SHOPKEEPER_LINES[shopId] || {
+    default: "猫店员看了看你，又看了看食材架。",
+    hover: "猫店员轻轻敲了敲柜台，示意你先选两味食材。",
+    click: [
+      "别紧张，配方会自己露出尾巴。",
+      "先选食材，剩下的交给猫大师。",
+      "深夜小店只收心事，不收解释。",
+    ],
+  };
+}
+
+function setShopkeeperLine(shopkeeper, lineEl, text) {
+  shopkeeper.dataset.currentLine = text;
+  lineEl.textContent = text;
+}
+
 function renderShopDisplay() {
   els.shopTabs.innerHTML = "";
   const { shop } = getCurrentPlayContext();
@@ -803,18 +1047,57 @@ function renderShopDisplay() {
   const shopkeeper = document.createElement("div");
   shopkeeper.className = "shopkeeper-placeholder";
   shopkeeper.dataset.shopkeeperAssetId = shopkeeperAssetId;
-  shopkeeper.setAttribute("aria-label", `${shop.npc || "店员猫"}占位符`);
+  shopkeeper.dataset.clickIndex = "0";
+  shopkeeper.tabIndex = 0;
+  shopkeeper.setAttribute("role", "button");
+  shopkeeper.setAttribute("aria-label", `与${shop.npc || "店员猫"}互动`);
   const shopkeeperCat = document.createElement("div");
   shopkeeperCat.className = "shopkeeper-cat";
   shopkeeperCat.setAttribute("aria-hidden", "true");
   shopkeeperCat.textContent = "🐱";
   const shopkeeperNote = document.createElement("div");
   shopkeeperNote.className = "shopkeeper-note";
-  shopkeeperNote.textContent = "店员猫暂时用占位符，未来替换为素材";
-  const shopkeeperDesc = document.createElement("div");
-  shopkeeperDesc.className = "shopkeeper-desc";
-  shopkeeperDesc.textContent = shop.npc_description || "正在柜台后面眯眼值班。";
-  shopkeeper.append(shopkeeperCat, shopkeeperNote, shopkeeperDesc);
+  shopkeeperNote.textContent = shop.npc || "店员猫";
+  const shopkeeperLine = document.createElement("div");
+  shopkeeperLine.className = "shopkeeper-line";
+  shopkeeperLine.setAttribute("aria-live", "polite");
+
+  const lines = getShopkeeperLines(shop.id);
+  setShopkeeperLine(shopkeeper, shopkeeperLine, lines.default);
+
+  const showHoverLine = () => {
+    shopkeeperLine.textContent = lines.hover;
+  };
+  const restoreCurrentLine = () => {
+    shopkeeperLine.textContent = shopkeeper.dataset.currentLine || lines.default;
+  };
+  const speakNextLine = () => {
+    const clickLines = lines.click.length ? lines.click : [lines.default];
+    const currentIndex = Number(shopkeeper.dataset.clickIndex || 0);
+    const nextLine = clickLines[currentIndex % clickLines.length];
+    shopkeeper.dataset.clickIndex = String((currentIndex + 1) % clickLines.length);
+    setShopkeeperLine(shopkeeper, shopkeeperLine, nextLine);
+    shopkeeper.classList.remove("is-speaking");
+    window.requestAnimationFrame(() => {
+      shopkeeper.classList.add("is-speaking");
+    });
+    window.setTimeout(() => {
+      shopkeeper.classList.remove("is-speaking");
+    }, 380);
+  };
+
+  shopkeeper.addEventListener("mouseenter", showHoverLine);
+  shopkeeper.addEventListener("focus", showHoverLine);
+  shopkeeper.addEventListener("mouseleave", restoreCurrentLine);
+  shopkeeper.addEventListener("blur", restoreCurrentLine);
+  shopkeeper.addEventListener("click", speakNextLine);
+  shopkeeper.addEventListener("keydown", (event) => {
+    if (event.key !== "Enter" && event.key !== " ") return;
+    event.preventDefault();
+    speakNextLine();
+  });
+
+  shopkeeper.append(shopkeeperCat, shopkeeperNote, shopkeeperLine);
 
   interior.append(copy, shopkeeper);
   card.append(signboard, interior);
@@ -857,20 +1140,9 @@ function renderIngredients() {
   });
 }
 
-function startGame(issueId) {
-  const seedIssue = getSeedIssueById(issueId);
-  const issue = getIssueById(issueId);
-  if (!issue) return;
-
-  state.currentIssueId = issueId;
-  state.currentSeedIssueId = seedIssue?.issue_id || null;
-  state.selectedSlots = [null, null];
-  state.isJudging = false;
-  hideJudgementOverlay(true);
-
+function enterIssuePlay(issue, seedIssue, shop) {
   setScreen("issue_play");
   const riddle = issue.riddle_text || seedIssue?.riddle_text || "猫大师今天只眯着眼，不肯把谜面说完整。";
-  const shop = getShopById(seedIssue?.shop_id || issue.shop_id);
   const shopName = shop?.name || seedIssue?.shop_name || issue.shop_name || "深夜小店";
   els.issueTitle.textContent = seedIssue?.title || getIssueDisplayTitle(issue);
   els.issueShopAnchor.textContent = `前往 ${shopName}，选择两味食材献祭。`;
@@ -880,6 +1152,33 @@ function startGame(issueId) {
   renderShopDisplay();
   renderIngredients();
   updateSacrificeSlots();
+}
+
+function startGame(issueId) {
+  if (state.isShopEntering) return;
+
+  const seedIssue = getSeedIssueById(issueId);
+  const issue = getIssueById(issueId);
+  if (!issue) return;
+  const shop = getShopById(seedIssue?.shop_id || issue.shop_id);
+
+  state.currentIssueId = issueId;
+  state.currentSeedIssueId = seedIssue?.issue_id || null;
+  state.selectedSlots = [null, null];
+  state.isJudging = false;
+  state.isShopEntering = true;
+  hideJudgementOverlay(true);
+
+  setScreen("shop_entry");
+  showShopEntryTransition(shop);
+
+  const transitionMs = prefersReducedMotion() ? 800 : 960;
+  state.shopEntryTimer = window.setTimeout(() => {
+    state.shopEntryTimer = null;
+    state.isShopEntering = false;
+    hideShopEntryTransition();
+    enterIssuePlay(issue, seedIssue, shop);
+  }, transitionMs);
 }
 
 function selectIngredient(ingredientId) {
@@ -921,6 +1220,52 @@ function pickNonsenseSlip() {
   if (!slips.length) return "猫咪打了个哈欠，你什么也没得到。";
   const index = Math.floor(Math.random() * slips.length);
   return slips[index].text;
+}
+
+function showNonsenseSlipFailure() {
+  showResult({
+    type: "failure_slip",
+    eyebrow: "猫咪废话签",
+    title: "猫咪废话签",
+    body: pickNonsenseSlip(),
+    icon: "📜",
+    actionLabel: "撕掉",
+  });
+}
+
+function showMudPawFailure() {
+  showPenaltyOverlay(
+    "mud-paw",
+    "泥巴猫爪印",
+    "猫咪嫌弃你的食物，留下爪印跑了。",
+  );
+  renderPenaltyItems("mud-paw", "🐾", penaltyItemPositions["mud-paw"]);
+}
+
+function showCatHairFailure() {
+  showPenaltyOverlay(
+    "cat-hair",
+    "猫毛过敏",
+    "猫咪气得炸毛，漫天猫毛让你喷嚏连连！快挥挥手赶走它们～",
+  );
+  renderPenaltyItems("cat-hair", "〰", penaltyItemPositions["cat-hair"]);
+  clearCatHairTimer();
+  state.catHairTimer = window.setTimeout(finishFailurePenalty, 7000);
+}
+
+function showFailurePunishment() {
+  const penaltyId = selectFailurePenalty();
+  if (penaltyId === "mud-paw") {
+    showMudPawFailure();
+    return;
+  }
+
+  if (penaltyId === "cat-hair") {
+    showCatHairFailure();
+    return;
+  }
+
+  showNonsenseSlipFailure();
 }
 
 function getIngredientDisplayName(ingredientId) {
@@ -986,14 +1331,7 @@ function judgeSelection(issue, selectedIngredientIds) {
     return;
   }
 
-  showResult({
-    type: "failure_slip",
-    eyebrow: "猫咪废话签",
-    title: "猫咪废话签",
-    body: pickNonsenseSlip(),
-    icon: "📜",
-    actionLabel: "撕掉",
-  });
+  showFailurePunishment();
 }
 
 function submitSelection() {
