@@ -20,6 +20,7 @@ const files = {
   shopScenes: "cat_fortune_shop_scene_specs.csv",
   assetPlaceholders: "cat_fortune_asset_placeholders.csv",
   taxonomyReview: "cat_fortune_issue_taxonomy_review.csv",
+  cardFlow: "cat_fortune_card_flow_40_review.csv",
   manifest: "cat_fortune_csv_manifest.csv",
 };
 
@@ -383,6 +384,34 @@ const issueIds = new Set(issues.map((issue) => issue.id));
 const recipeIssueIds = new Set(recipes.map((recipe) => recipe.issue_id));
 const wisdomIssueIds = new Set(success_wisdom.map((entry) => entry.issue_id));
 const hintIssueIds = new Set(half_success_hints.map((hint) => hint.issue_id));
+const card_flow_items = sourceRows.cardFlow.map((row) => {
+  const item = {
+    issue_id: row.issue_id,
+    display_title: row.display_title,
+    level1: row.level1,
+    level2: row.level2,
+    is_default_seed: toBool(row.is_default_seed),
+    is_public: toBool(row.is_public),
+    notes: row.notes,
+  };
+
+  if (!issueById.has(item.issue_id)) {
+    errors.push(`Card flow item ${item.issue_id || "(blank)"} does not exist in full issue master CSV.`);
+  }
+
+  if (item.is_public) {
+    if (!item.display_title) errors.push(`Public card flow item ${item.issue_id} is missing display_title.`);
+    if (!item.level1) errors.push(`Public card flow item ${item.issue_id} is missing level1.`);
+    if (!item.level2) errors.push(`Public card flow item ${item.issue_id} is missing level2.`);
+  } else {
+    warnings.push(`Card flow item ${item.issue_id || "(blank)"} is marked non-public and will be hidden in the app.`);
+  }
+
+  return item;
+});
+const publicCardFlowItems = card_flow_items.filter((item) => item.is_public);
+const cardFlowLevel1Count = unique(publicCardFlowItems.map((item) => item.level1)).length;
+const cardFlowDefaultSeedCount = card_flow_items.filter((item) => item.is_default_seed).length;
 const seedValidation = {
   all_map_to_full_issue: seed_issues.every((issue) => issueIds.has(issue.issue_id)),
   all_have_playable_recipe: seed_issues.every((issue) => recipeIssueIds.has(issue.issue_id)),
@@ -440,6 +469,10 @@ const runtimeData = {
   recipes,
   half_success_hints,
   success_wisdom,
+  card_flow: {
+    source: files.cardFlow,
+    items: card_flow_items,
+  },
   nonsense_slips,
   failure_penalties,
   ui_copy,
@@ -475,6 +508,10 @@ console.log(`Recipes: ${recipes.length}`);
 console.log(`Half-success hints: ${half_success_hints.length}`);
 console.log(`Success wisdom entries: ${success_wisdom.length}`);
 console.log(`Nonsense slips: ${nonsense_slips.length}`);
+console.log(`Card flow items: ${card_flow_items.length}`);
+console.log(`Public card flow items: ${publicCardFlowItems.length}`);
+console.log(`Card flow level1 groups: ${cardFlowLevel1Count}`);
+console.log(`Default seeds in card flow: ${cardFlowDefaultSeedCount}`);
 console.log("");
 console.log("Seed issue validation:");
 console.log(`- every seed issue maps to a valid full issue: ${seedValidation.all_map_to_full_issue ? "yes" : "no"}`);

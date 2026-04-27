@@ -35,6 +35,10 @@
   <div id="header">
     <h2>大馋猫：深夜占卜</h2>
     <div class="header-subtitle">选一个你此刻的心结</div>
+    <button id="collection-book-button" class="collection-book-button" type="button" aria-label="打开收藏账本">
+      <span class="collection-book-label">账本</span>
+      <span id="collection-book-count" class="collection-book-count" aria-label="已收藏 0 张">0</span>
+    </button>
   </div>
 
   <div id="game-container">
@@ -59,7 +63,7 @@
           <div class="oracle-cat">🐱</div>
           <div class="oracle-copy">
             <div class="oracle-title">猫大师开始摆牌</div>
-            <div class="oracle-subtitle">今晚只翻五张安全 demo 心绪卡</div>
+            <div class="oracle-subtitle">今晚翻开整理过的心绪卡</div>
           </div>
         </div>
         <div class="card-flow-header">
@@ -160,7 +164,21 @@
       <div id="food-result" class="food-icon">🍜</div>
       <h3 id="food-name">获得食物</h3>
       <p id="wisdom-text" class="result-text">猫咪智慧加载中...</p>
+      <div id="collection-feedback" class="collection-feedback" aria-live="polite"></div>
       <button class="issue-btn result-action-btn" id="result-action-btn" type="button">把智慧带走</button>
+    </div>
+  </div>
+
+  <div id="collection-book-overlay" class="collection-book-overlay" role="dialog" aria-modal="true" aria-labelledby="collection-book-title" hidden>
+    <div class="collection-book-panel">
+      <div class="collection-book-header">
+        <div>
+          <div class="collection-book-eyebrow">深夜账本</div>
+          <h3 id="collection-book-title">带走的夜宵智慧</h3>
+        </div>
+        <button id="collection-book-close" class="collection-book-close" type="button" aria-label="关闭账本">×</button>
+      </div>
+      <div id="collection-book-grid" class="collection-book-grid"></div>
     </div>
   </div>
 

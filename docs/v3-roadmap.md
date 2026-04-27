@@ -19,7 +19,7 @@ rainy opening
 
 - Copy from stable V2; do not rebuild from V1.
 - Keep the five V1 seed issues as the default playable entry.
-- Keep the full 40-issue dataset as future expansion data, not the first screen.
+- Keep the full 40-issue dataset out of the first screen; expose it only through the separate expanded card-flow entry.
 - Preserve runtime JSON loading and all CSV validation scripts.
 - Add polish in small, reviewable layers.
 - Prefer placeholders and documented asset hooks before adding heavy animation.
@@ -64,11 +64,28 @@ rainy opening
    - Real audio files, final cat sprites, physics-style animation, and full PRD-level cinematic judgement remain future work.
 
 5. Result card polish
-   - Status: partially completed for the current demo baseline.
+   - Status: completed for the current Stage 4 demo baseline.
    - Improve success, half-success, and failure result presentation.
    - Add placeholder result-food card imagery.
    - Keep retry and return-to-issue-selection behavior.
    - The current failure baseline includes lightweight playable penalties, while full PRD cinematic punishments remain future work.
+
+## Stage 4 Demo Baseline
+
+Stage 4 is completed for the current non-publishing demo baseline:
+
+- 4.1 manual 40-issue card-flow review: completed.
+- 4.2 runtime CSV connection: completed; `card_flow` is compiled from the reviewed CSV into `content/runtime-data.json`.
+- 4.3 localStorage collection book: completed; success food wisdom cards are saved locally and survive refresh on the same device.
+- 4.4 fly-to-book animation: completed; success collection gives short visual feedback and updates the top-right `账本` count.
+
+Future PRD-level work remains separate:
+
+- Full collection book art and polished food-card visuals.
+- Full 40-card locked/unlocked album states.
+- Duplicate collection variants and richer repeated-collection feedback.
+- Account/cloud storage and backend sync.
+- Final image, sprite, and audio asset integration.
 
 6. Deployment/demo polish
    - Verify static hosting behavior.
@@ -78,8 +95,8 @@ rainy opening
 
 ## V3 Non-goals
 
-- Do not implement the full 40-issue public card system.
-- Do not implement a full collection book.
+- Do not replace the default five-seed entry with the 40-issue flow.
+- Do not treat the lightweight localStorage book as the final full album system.
 - Do not implement full cinematic mud-paw or cat-hair punishment interactions with real assets or precise gestures.
 - Do not connect a real LLM API.
 - Do not add a backend database.
@@ -104,6 +121,11 @@ rainy opening
 - Cat hair strands can be clicked away or auto-close after the demo timer, then return to the same issue.
 - Retry returns to ingredient selection after half-success or failure.
 - Success can return to issue selection.
+- Expanded `探索更多心结` shows reviewed Level 1 -> Level 2 -> issue cards without visible Q ids.
+- Success `把智慧带走` saves a food wisdom card into the localStorage `账本`.
+- Refreshing the page preserves collected entries on the same browser/device.
+- Opening and closing the collection book overlay works.
+- Collecting the same success again avoids duplicate cards and can show repeated-collection feedback.
 - `node scripts/compile-csv-to-runtime.js` passes.
 - `node scripts/validate-content.js` passes.
 - `node scripts/build-content-report.js` passes.

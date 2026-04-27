@@ -19,6 +19,8 @@ const state = {
     selectedCategory: "",
     selectedSubcategory: "",
   },
+  collection: [],
+  isCollectingSuccess: false,
 };
 
 const introLines = [
@@ -41,6 +43,9 @@ const cardFlowTiming = {
   transitionMs: 140,
   orbMs: 430,
 };
+
+const COLLECTION_STORAGE_KEY = "cat_fortune_v3_collection";
+const collectionFlyMs = 720;
 
 const FAILURE_PENALTY_FALLBACKS = [
   { id: "nonsense-slip", weight_percent: 50 },
@@ -96,104 +101,6 @@ const SHOPKEEPER_LINES = {
   },
 };
 
-const DEMO_CARD_FLOW = [
-  {
-    id: "work-study",
-    title: "职场与学业",
-    subtitle: "任务、绩效、创作、压力",
-    symbol: "☕",
-    directions: [
-      {
-        id: "deadline-performance",
-        title: "Deadline / 绩效焦虑",
-        hint: "事情一件压一件，脑袋像没关火的锅。",
-        issues: [
-          {
-            title: "Deadline 任务过载",
-            issueId: "Q01",
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: "desire-comparison",
-    title: "欲望与比较",
-    subtitle: "嫉妒、同辈压力、得失感",
-    symbol: "✦",
-    directions: [
-      {
-        id: "envy-peer-pressure",
-        title: "嫉妒 / 同辈压力",
-        hint: "别人的光太亮，自己的胃有点酸。",
-        issues: [
-          {
-            title: "此时此刻的嫉妒心",
-            issueId: "Q10",
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: "self-personality",
-    title: "自我与性格",
-    subtitle: "短板、自我怀疑、不完美",
-    symbol: "◐",
-    directions: [
-      {
-        id: "self-doubt",
-        title: "自我怀疑",
-        hint: "把不够好的地方，先放到猫爪边。",
-        issues: [
-          {
-            title: "对性格短板的怀疑",
-            issueId: "Q07",
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: "night-loss-control",
-    title: "夜晚与失控",
-    subtitle: "熬夜、虚无、报复性自由",
-    symbol: "☾",
-    directions: [
-      {
-        id: "revenge-bedtime",
-        title: "报复性熬夜",
-        hint: "越困越清醒，像一盏不肯灭的灯。",
-        issues: [
-          {
-            title: "报复性熬夜",
-            issueId: "Q08",
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: "low-turning-point",
-    title: "低谷与转机",
-    subtitle: "倒霉、低谷、想求一个转机",
-    symbol: "◇",
-    directions: [
-      {
-        id: "bad-luck-turnaround",
-        title: "倒霉求转机",
-        hint: "坏运气黏在鞋底，等一阵热气冲散。",
-        issues: [
-          {
-            title: "倒霉透顶求转机",
-            issueId: "Q35",
-          },
-        ],
-      },
-    ],
-  },
-];
-
 const els = {
   openingScreen: document.getElementById("opening-screen"),
   enterDoorBtn: document.getElementById("enter-door-btn"),
@@ -239,7 +146,13 @@ const els = {
   foodResult: document.getElementById("food-result"),
   foodName: document.getElementById("food-name"),
   wisdomText: document.getElementById("wisdom-text"),
+  collectionFeedback: document.getElementById("collection-feedback"),
   resultActionBtn: document.getElementById("result-action-btn"),
+  collectionBookButton: document.getElementById("collection-book-button"),
+  collectionBookCount: document.getElementById("collection-book-count"),
+  collectionBookOverlay: document.getElementById("collection-book-overlay"),
+  collectionBookClose: document.getElementById("collection-book-close"),
+  collectionBookGrid: document.getElementById("collection-book-grid"),
   penaltyOverlay: document.getElementById("penalty-overlay"),
   penaltyCard: document.getElementById("penalty-card"),
   penaltyTitle: document.getElementById("penalty-title"),
@@ -340,6 +253,210 @@ function getHintById(hintId) {
 
 function getWisdomById(wisdomId) {
   return state.data.success_wisdom.find((wisdom) => wisdom.id === wisdomId);
+}
+
+function normalizeCollectionEntry(entry) {
+  if (!entry || !entry.issue_id || !entry.food_name || !entry.wisdom_text) return null;
+  return {
+    issue_id: String(entry.issue_id),
+    display_title: String(entry.display_title || ""),
+    food_name: String(entry.food_name),
+    wisdom_text: String(entry.wisdom_text),
+    shop_id: String(entry.shop_id || ""),
+    collected_at: String(entry.collected_at || new Date().toISOString()),
+  };
+}
+
+function loadCollection() {
+  try {
+    const raw = window.localStorage?.getItem(COLLECTION_STORAGE_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+    return parsed.map(normalizeCollectionEntry).filter(Boolean);
+  } catch (error) {
+    debugSfxWarning("collection-load", error);
+    return [];
+  }
+}
+
+function saveCollection(collection) {
+  try {
+    window.localStorage?.setItem(COLLECTION_STORAGE_KEY, JSON.stringify(collection));
+    return true;
+  } catch (error) {
+    debugSfxWarning("collection-save", error);
+    return false;
+  }
+}
+
+function getCollectionEntries() {
+  return Array.isArray(state.collection) ? state.collection : [];
+}
+
+function isCollected(issueId) {
+  return getCollectionEntries().some((entry) => entry.issue_id === issueId);
+}
+
+function addToCollection(entry) {
+  const normalizedEntry = normalizeCollectionEntry(entry);
+  if (!normalizedEntry) {
+    return { added: false, duplicate: false, saved: false, entry: null };
+  }
+
+  const collection = [...getCollectionEntries()];
+  const existingIndex = collection.findIndex((item) => item.issue_id === normalizedEntry.issue_id);
+  const duplicate = existingIndex !== -1;
+
+  if (duplicate) {
+    collection[existingIndex] = {
+      ...collection[existingIndex],
+      ...normalizedEntry,
+      collected_at: normalizedEntry.collected_at,
+    };
+  } else {
+    collection.unshift(normalizedEntry);
+  }
+
+  state.collection = collection;
+  const saved = saveCollection(collection);
+  return { added: true, duplicate, saved, entry: normalizedEntry };
+}
+
+function formatCollectedDate(value) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "";
+  return date.toLocaleDateString("zh-CN", {
+    month: "2-digit",
+    day: "2-digit",
+  });
+}
+
+function updateCollectionButton() {
+  const count = getCollectionEntries().length;
+  els.collectionBookCount.textContent = String(count);
+  els.collectionBookCount.setAttribute("aria-label", `已收藏 ${count} 张`);
+  els.collectionBookButton.classList.toggle("has-items", count > 0);
+  els.collectionBookButton.setAttribute("aria-label", `打开收藏账本，已收藏 ${count} 张`);
+}
+
+function pulseCollectionButton() {
+  els.collectionBookButton.classList.remove("is-pulsing");
+  window.requestAnimationFrame(() => {
+    els.collectionBookButton.classList.add("is-pulsing");
+  });
+  window.setTimeout(() => {
+    els.collectionBookButton.classList.remove("is-pulsing");
+  }, 620);
+}
+
+function buildCurrentCollectionEntry() {
+  const issue = getIssueById(state.currentIssueId);
+  if (!issue) return null;
+  const wisdom = getWisdomById(issue.success_wisdom_id);
+
+  return {
+    issue_id: issue.id,
+    display_title: getIssueDisplayTitle(issue),
+    food_name: issue.food_name || els.foodName.textContent || "深夜夜宵",
+    wisdom_text: wisdom?.text || els.wisdomText.textContent || "猫大师点点头，但这份智慧还没写好。",
+    shop_id: issue.shop_id || "",
+    collected_at: new Date().toISOString(),
+  };
+}
+
+function createCollectionCard(entry) {
+  const card = document.createElement("article");
+  card.className = "collection-card";
+
+  const foodName = document.createElement("h4");
+  foodName.textContent = entry.food_name;
+  const issueTitle = document.createElement("div");
+  issueTitle.className = "collection-card-issue";
+  issueTitle.textContent = entry.display_title || "未命名心绪";
+  const wisdom = document.createElement("p");
+  wisdom.textContent = entry.wisdom_text;
+  const date = document.createElement("div");
+  date.className = "collection-card-date";
+  date.textContent = formatCollectedDate(entry.collected_at);
+
+  card.append(foodName, issueTitle, wisdom);
+  if (date.textContent) card.appendChild(date);
+  return card;
+}
+
+function renderCollectionBook() {
+  els.collectionBookGrid.innerHTML = "";
+  const entries = getCollectionEntries();
+
+  if (!entries.length) {
+    const empty = document.createElement("div");
+    empty.className = "collection-book-empty";
+    empty.textContent = "账本还空着。先把一道夜宵的智慧带走吧。";
+    els.collectionBookGrid.appendChild(empty);
+    return;
+  }
+
+  entries.forEach((entry) => {
+    els.collectionBookGrid.appendChild(createCollectionCard(entry));
+  });
+}
+
+function openCollectionBook() {
+  playSfx("click");
+  renderCollectionBook();
+  els.collectionBookOverlay.hidden = false;
+  window.requestAnimationFrame(() => {
+    els.collectionBookOverlay.classList.add("is-visible");
+  });
+}
+
+function closeCollectionBook() {
+  playSfx("click");
+  els.collectionBookOverlay.classList.remove("is-visible");
+  window.setTimeout(() => {
+    if (!els.collectionBookOverlay.classList.contains("is-visible")) {
+      els.collectionBookOverlay.hidden = true;
+    }
+  }, 160);
+}
+
+function flySuccessCardToBook() {
+  updateCollectionButton();
+
+  if (prefersReducedMotion()) {
+    pulseCollectionButton();
+    return Promise.resolve();
+  }
+
+  const startRect = els.resultCard.getBoundingClientRect();
+  const endRect = els.collectionBookButton.getBoundingClientRect();
+  const startX = startRect.left + (startRect.width / 2);
+  const startY = startRect.top + (startRect.height / 2);
+  const endX = endRect.left + (endRect.width / 2);
+  const endY = endRect.top + (endRect.height / 2);
+  const flyCard = document.createElement("div");
+  flyCard.className = "collection-fly-card";
+  flyCard.textContent = els.foodName.textContent || "智慧";
+  flyCard.style.left = `${startX}px`;
+  flyCard.style.top = `${startY}px`;
+  flyCard.style.setProperty("--fly-x", `${endX - startX}px`);
+  flyCard.style.setProperty("--fly-y", `${endY - startY}px`);
+  document.body.appendChild(flyCard);
+
+  return new Promise((resolve) => {
+    let finished = false;
+    const finish = () => {
+      if (finished) return;
+      finished = true;
+      flyCard.remove();
+      pulseCollectionButton();
+      resolve();
+    };
+
+    flyCard.addEventListener("animationend", finish, { once: true });
+    window.setTimeout(finish, collectionFlyMs + 120);
+  });
 }
 
 function countItems(items) {
@@ -773,23 +890,111 @@ function appendCardFlowNote(text) {
   els.cardFlowGrid.appendChild(note);
 }
 
-function getDemoCategory(categoryId) {
-  return DEMO_CARD_FLOW.find((category) => category.id === categoryId) || null;
+function appendCardFlowEmpty(text) {
+  const empty = document.createElement("div");
+  empty.className = "card-flow-empty";
+  const title = document.createElement("div");
+  title.className = "card-flow-empty-title";
+  title.textContent = text;
+  empty.appendChild(title);
+  els.cardFlowGrid.appendChild(empty);
 }
 
-function getDemoSubcategory(categoryId, subcategoryId) {
-  const category = getDemoCategory(categoryId);
-  return category?.directions.find((direction) => direction.id === subcategoryId) || null;
+function getPublicCardFlowItems() {
+  const items = state.data?.card_flow?.items;
+  if (!Array.isArray(items)) return [];
+
+  return items.filter((item) => (
+    item
+    && item.is_public === true
+    && item.issue_id
+    && item.display_title
+    && item.level1
+    && item.level2
+  ));
+}
+
+function countUnique(values) {
+  return new Set(values.filter(Boolean)).size;
+}
+
+function getCardFlowCategorySymbol(title, index) {
+  if (title.includes("职场") || title.includes("学业")) return "☕";
+  if (title.includes("关系") || title.includes("亲密")) return "♡";
+  if (title.includes("自我") || title.includes("情绪")) return "◐";
+  if (title.includes("生活") || title.includes("节奏")) return "☾";
+  if (title.includes("欲望") || title.includes("金钱")) return "◇";
+  return ["✦", "☾", "◇", "◐", "☕"][index % 5];
+}
+
+function getCardFlowCategories() {
+  const groups = new Map();
+
+  getPublicCardFlowItems().forEach((item) => {
+    if (!groups.has(item.level1)) {
+      groups.set(item.level1, []);
+    }
+    groups.get(item.level1).push(item);
+  });
+
+  return Array.from(groups, ([title, items], index) => ({
+    id: title,
+    title,
+    items,
+    symbol: getCardFlowCategorySymbol(title, index),
+    subtitle: `${countUnique(items.map((item) => item.level2))} 个方向 / ${items.length} 张心绪卡`,
+  }));
+}
+
+function getCardFlowCategory(categoryId) {
+  return getCardFlowCategories().find((category) => category.id === categoryId) || null;
+}
+
+function getCardFlowSubcategories(categoryId) {
+  const category = getCardFlowCategory(categoryId);
+  if (!category) return [];
+
+  const groups = new Map();
+  category.items.forEach((item) => {
+    if (!groups.has(item.level2)) {
+      groups.set(item.level2, []);
+    }
+    groups.get(item.level2).push(item);
+  });
+
+  return Array.from(groups, ([title, items]) => ({
+    id: title,
+    title,
+    items,
+    subtitle: `${items.length} 张心绪卡`,
+  }));
+}
+
+function getCardFlowSubcategory(categoryId, subcategoryId) {
+  return getCardFlowSubcategories(categoryId).find((subcategory) => subcategory.id === subcategoryId) || null;
+}
+
+function getCardFlowTitleByIssueId(issueId) {
+  return getPublicCardFlowItems().find((item) => item.issue_id === issueId)?.display_title || "";
 }
 
 function renderCategorySelection() {
+  const categories = getCardFlowCategories();
+
   setScreen("category_selection");
   els.cardFlowBackBtn.textContent = "返回五张默认卡";
   els.cardFlowTitle.textContent = "选择一种心绪方向";
-  els.cardFlowSubtitle.textContent = "临时 V3 demo 卡牌流，只使用五个默认心结。";
+  els.cardFlowSubtitle.textContent = categories.length
+    ? "让猫大师先按大类闻一闻今晚的心事。"
+    : "完整心绪卡牌正在整理中，本版本先保留五个默认心结。";
   clearCardFlowGrid();
 
-  DEMO_CARD_FLOW.forEach((category) => {
+  if (!categories.length) {
+    appendCardFlowEmpty("完整心绪卡牌正在整理中，本版本先保留五个默认心结。");
+    return;
+  }
+
+  categories.forEach((category) => {
     const card = createCardFlowButton(
       "emotion-category-card",
       category.title,
@@ -799,8 +1004,6 @@ function renderCategorySelection() {
     );
     els.cardFlowGrid.appendChild(card);
   });
-
-  appendCardFlowNote("这是临时演示分层，不代表最终 40 题正式分类。");
 }
 
 function showCategorySelection() {
@@ -811,11 +1014,12 @@ function showCategorySelection() {
 }
 
 function renderSubcategorySelection(categoryId) {
-  const category = getDemoCategory(categoryId);
+  const category = getCardFlowCategory(categoryId);
   if (!category) {
     renderCategorySelection();
     return;
   }
+  const subcategories = getCardFlowSubcategories(categoryId);
 
   state.cardFlow.selectedCategory = categoryId;
   state.cardFlow.selectedSubcategory = "";
@@ -825,11 +1029,16 @@ function renderSubcategorySelection(categoryId) {
   els.cardFlowSubtitle.textContent = category.subtitle;
   clearCardFlowGrid();
 
-  category.directions.forEach((direction) => {
+  if (!subcategories.length) {
+    appendCardFlowEmpty("这个方向的心绪卡还在整理中。");
+    return;
+  }
+
+  subcategories.forEach((direction) => {
     const card = createCardFlowButton(
       "emotion-subcategory-card",
       direction.title,
-      direction.hint || "再让猫大师缩小一点范围。",
+      direction.subtitle,
       (card) => selectCardThen(card, () => transitionCardFlow(() => renderIssueSelection(category.id, direction.id))),
     );
     els.cardFlowGrid.appendChild(card);
@@ -842,6 +1051,8 @@ function showSubcategorySelection(categoryId) {
 }
 
 function getIssueDisplayTitle(issue) {
+  const cardFlowTitle = getCardFlowTitleByIssueId(issue.id);
+  if (cardFlowTitle) return cardFlowTitle;
   const seedIssue = getSeedIssueById(issue.id);
   if (issue.title) return issue.title;
   if (seedIssue?.title) return seedIssue.title;
@@ -849,8 +1060,8 @@ function getIssueDisplayTitle(issue) {
 }
 
 function renderIssueSelection(categoryId, subcategoryId) {
-  const category = getDemoCategory(categoryId);
-  const direction = getDemoSubcategory(categoryId, subcategoryId);
+  const category = getCardFlowCategory(categoryId);
+  const direction = getCardFlowSubcategory(categoryId, subcategoryId);
   if (!category || !direction) {
     renderCategorySelection();
     return;
@@ -864,14 +1075,18 @@ function renderIssueSelection(categoryId, subcategoryId) {
   els.cardFlowSubtitle.textContent = "选择一张具体心绪卡";
   clearCardFlowGrid();
 
-  direction.issues.forEach((issue) => {
+  if (!direction.items.length) {
+    appendCardFlowEmpty("这个方向的心绪卡还在整理中。");
+    return;
+  }
+
+  direction.items.forEach((issue) => {
     const card = createCardFlowButton(
       "emotion-issue-card",
-      issue.title,
+      issue.display_title,
       "让猫大师闻闻这件事",
-      (card) => selectIssueCard(card, issue.issueId),
+      (card) => selectIssueCard(card, issue.issue_id),
     );
-    card.dataset.issueId = issue.issueId;
     els.cardFlowGrid.appendChild(card);
   });
 }
@@ -1378,7 +1593,10 @@ function showResult(result) {
   els.foodResult.textContent = result.icon;
   els.foodName.textContent = result.title;
   els.wisdomText.textContent = result.body;
+  els.collectionFeedback.textContent = "";
   els.resultActionBtn.textContent = result.actionLabel;
+  els.resultActionBtn.disabled = false;
+  state.isCollectingSuccess = false;
 }
 
 function closeRetryResult() {
@@ -1389,8 +1607,34 @@ function closeRetryResult() {
 }
 
 function closeSuccessResult() {
+  els.overlay.style.display = "none";
+  els.resultActionBtn.disabled = false;
+  state.isCollectingSuccess = false;
   state.activeResultType = null;
   showSeedSelection();
+}
+
+async function collectSuccessAndClose() {
+  if (state.isCollectingSuccess) return;
+  state.isCollectingSuccess = true;
+  els.resultActionBtn.disabled = true;
+
+  try {
+    const entry = buildCurrentCollectionEntry();
+    if (entry) {
+      const collectionResult = addToCollection(entry);
+      if (collectionResult.duplicate) {
+        els.collectionFeedback.textContent = "老味道，新感悟";
+      } else if (!collectionResult.saved) {
+        els.collectionFeedback.textContent = "账本先记在本局里";
+      }
+      await flySuccessCardToBook();
+    }
+  } catch (error) {
+    debugSfxWarning("collection-success", error);
+  }
+
+  closeSuccessResult();
 }
 
 function handleResultAction() {
@@ -1401,7 +1645,7 @@ function handleResultAction() {
   }
 
   if (state.activeResultType === "success") {
-    closeSuccessResult();
+    collectSuccessAndClose();
     return;
   }
 
@@ -1413,8 +1657,10 @@ async function init() {
     setScreen("opening");
     state.data = await loadGameData();
     state.assetManifest = await loadAssetManifest();
+    state.collection = loadCollection();
     preloadAudioAssets();
     renderIssueButtons();
+    updateCollectionButton();
     updateSacrificeSlots();
     els.enterDoorBtn.disabled = false;
     els.openingStatus.textContent = "雨还在下，门已经虚掩。";
@@ -1422,6 +1668,16 @@ async function init() {
     els.catIntroScreen.addEventListener("click", continueIntro);
     els.expandedCardFlowBtn.addEventListener("click", showCategorySelection);
     els.cardFlowBackBtn.addEventListener("click", handleCardFlowBack);
+    els.collectionBookButton.addEventListener("click", openCollectionBook);
+    els.collectionBookClose.addEventListener("click", closeCollectionBook);
+    els.collectionBookOverlay.addEventListener("click", (event) => {
+      if (event.target === els.collectionBookOverlay) closeCollectionBook();
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && !els.collectionBookOverlay.hidden) {
+        closeCollectionBook();
+      }
+    });
     els.sacrificeSlots.forEach((slot, index) => {
       slot.addEventListener("click", () => clearSacrificeSlot(index));
     });

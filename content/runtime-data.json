@@ -2,7 +2,7 @@
   "meta": {
     "project_id": "cat-fortune-v3",
     "data_version": "csv-runtime-v3-seed-entry",
-    "generated_at": "2026-04-26T14:58:58.121Z",
+    "generated_at": "2026-04-27T07:23:56.715Z",
     "generated_by": "scripts/compile-csv-to-runtime.js",
     "source_dir": "cat_fortune_csv_exports",
     "source_files": [
@@ -20,10 +20,12 @@
       "cat_fortune_shop_scene_specs.csv",
       "cat_fortune_asset_placeholders.csv",
       "cat_fortune_issue_taxonomy_review.csv",
+      "cat_fortune_card_flow_40_review.csv",
       "cat_fortune_csv_manifest.csv"
     ],
     "all_csv_files": [
       "cat_fortune_asset_placeholders.csv",
+      "cat_fortune_card_flow_40_review.csv",
       "cat_fortune_csv_manifest.csv",
       "cat_fortune_failure_penalties.csv",
       "cat_fortune_flow_states.csv",
@@ -55,6 +57,7 @@
       "cat_fortune_shop_scene_specs.csv": 3,
       "cat_fortune_asset_placeholders.csv": 10,
       "cat_fortune_issue_taxonomy_review.csv": 40,
+      "cat_fortune_card_flow_40_review.csv": 40,
       "cat_fortune_csv_manifest.csv": 15
     },
     "notes": [
@@ -3432,6 +3435,371 @@
       "text": "哪怕只是为了买个芒果，出门吹吹风也是好的。你看，路边的流浪猫都在等你。虽然它不一定理你，但总比对着屏幕叹气强。"
     }
   ],
+  "card_flow": {
+    "source": "cat_fortune_card_flow_40_review.csv",
+    "items": [
+      {
+        "issue_id": "Q01",
+        "display_title": "Deadline 任务过载",
+        "level1": "职场与学业",
+        "level2": "Deadline / 绩效焦虑",
+        "is_default_seed": true,
+        "is_public": true,
+        "notes": "默认五心结；已验证主路径"
+      },
+      {
+        "issue_id": "Q02",
+        "display_title": "创作起步恐惧",
+        "level1": "职场与学业",
+        "level2": "创作卡壳",
+        "is_default_seed": false,
+        "is_public": true,
+        "notes": ""
+      },
+      {
+        "issue_id": "Q03",
+        "display_title": "机械式续命",
+        "level1": "职场与学业",
+        "level2": "重复劳动",
+        "is_default_seed": false,
+        "is_public": true,
+        "notes": ""
+      },
+      {
+        "issue_id": "Q04",
+        "display_title": "重复劳动麻木",
+        "level1": "职场与学业",
+        "level2": "重复劳动",
+        "is_default_seed": false,
+        "is_public": true,
+        "notes": ""
+      },
+      {
+        "issue_id": "Q05",
+        "display_title": "柠檬朋友委屈",
+        "level1": "关系与亲密",
+        "level2": "友情边界",
+        "is_default_seed": false,
+        "is_public": true,
+        "notes": ""
+      },
+      {
+        "issue_id": "Q06",
+        "display_title": "温柔面具戴太久",
+        "level1": "职场与学业",
+        "level2": "情绪面具",
+        "is_default_seed": false,
+        "is_public": true,
+        "notes": ""
+      },
+      {
+        "issue_id": "Q07",
+        "display_title": "想跳出安稳",
+        "level1": "生活节奏",
+        "level2": "改变与冒险",
+        "is_default_seed": false,
+        "is_public": true,
+        "notes": "不是默认五心结，但可作为生活节奏入口"
+      },
+      {
+        "issue_id": "Q08",
+        "display_title": "报复性熬夜",
+        "level1": "生活节奏",
+        "level2": "报复性熬夜",
+        "is_default_seed": true,
+        "is_public": true,
+        "notes": "默认五心结；已验证主路径"
+      },
+      {
+        "issue_id": "Q09",
+        "display_title": "同辈比较上头",
+        "level1": "欲望与金钱",
+        "level2": "嫉妒 / 同辈压力",
+        "is_default_seed": false,
+        "is_public": true,
+        "notes": "与 Q10 同二级；如觉得重复可后续拆为比较焦虑"
+      },
+      {
+        "issue_id": "Q10",
+        "display_title": "此时此刻的嫉妒心",
+        "level1": "欲望与金钱",
+        "level2": "嫉妒 / 同辈压力",
+        "is_default_seed": true,
+        "is_public": true,
+        "notes": "默认五心结；已验证主路径"
+      },
+      {
+        "issue_id": "Q11",
+        "display_title": "觉得自己不够闪亮",
+        "level1": "自我与情绪",
+        "level2": "自我价值",
+        "is_default_seed": false,
+        "is_public": true,
+        "notes": ""
+      },
+      {
+        "issue_id": "Q12",
+        "display_title": "欲望填不满",
+        "level1": "欲望与金钱",
+        "level2": "欲望平衡",
+        "is_default_seed": false,
+        "is_public": true,
+        "notes": ""
+      },
+      {
+        "issue_id": "Q13",
+        "display_title": "找不到归属感",
+        "level1": "关系与亲密",
+        "level2": "归属感缺失",
+        "is_default_seed": false,
+        "is_public": true,
+        "notes": ""
+      },
+      {
+        "issue_id": "Q14",
+        "display_title": "空房间孤独",
+        "level1": "关系与亲密",
+        "level2": "孤独感",
+        "is_default_seed": false,
+        "is_public": true,
+        "notes": ""
+      },
+      {
+        "issue_id": "Q15",
+        "display_title": "演出来的真实",
+        "level1": "自我与情绪",
+        "level2": "真实与表演",
+        "is_default_seed": false,
+        "is_public": true,
+        "notes": ""
+      },
+      {
+        "issue_id": "Q16",
+        "display_title": "热闹场合空心",
+        "level1": "关系与亲密",
+        "level2": "社交疲惫",
+        "is_default_seed": false,
+        "is_public": true,
+        "notes": ""
+      },
+      {
+        "issue_id": "Q17",
+        "display_title": "等一个同频的人",
+        "level1": "关系与亲密",
+        "level2": "归属感缺失",
+        "is_default_seed": false,
+        "is_public": true,
+        "notes": ""
+      },
+      {
+        "issue_id": "Q18",
+        "display_title": "苦到反胃的关系",
+        "level1": "关系与亲密",
+        "level2": "关系消耗",
+        "is_default_seed": false,
+        "is_public": true,
+        "notes": ""
+      },
+      {
+        "issue_id": "Q19",
+        "display_title": "被旧回忆粘住",
+        "level1": "关系与亲密",
+        "level2": "旧关系牵扯",
+        "is_default_seed": false,
+        "is_public": true,
+        "notes": ""
+      },
+      {
+        "issue_id": "Q20",
+        "display_title": "哭完还舍不得空碗",
+        "level1": "关系与亲密",
+        "level2": "旧关系牵扯",
+        "is_default_seed": false,
+        "is_public": true,
+        "notes": ""
+      },
+      {
+        "issue_id": "Q21",
+        "display_title": "对性格短板的怀疑",
+        "level1": "自我与情绪",
+        "level2": "自我接纳",
+        "is_default_seed": true,
+        "is_public": true,
+        "notes": "默认五心结；由 V1“对性格短板的怀疑”映射"
+      },
+      {
+        "issue_id": "Q22",
+        "display_title": "碎裂后的重组",
+        "level1": "自我与情绪",
+        "level2": "自我修复",
+        "is_default_seed": false,
+        "is_public": true,
+        "notes": ""
+      },
+      {
+        "issue_id": "Q23",
+        "display_title": "讨好到负重",
+        "level1": "关系与亲密",
+        "level2": "讨好与边界",
+        "is_default_seed": false,
+        "is_public": true,
+        "notes": ""
+      },
+      {
+        "issue_id": "Q24",
+        "display_title": "外酸内甜的评价焦虑",
+        "level1": "自我与情绪",
+        "level2": "外部评价",
+        "is_default_seed": false,
+        "is_public": true,
+        "notes": "跨店配方；已有编译警告但不阻断"
+      },
+      {
+        "issue_id": "Q25",
+        "display_title": "深夜虚无感",
+        "level1": "自我与情绪",
+        "level2": "深夜情绪",
+        "is_default_seed": false,
+        "is_public": true,
+        "notes": ""
+      },
+      {
+        "issue_id": "Q26",
+        "display_title": "生活没味道",
+        "level1": "生活节奏",
+        "level2": "平淡与意义",
+        "is_default_seed": false,
+        "is_public": true,
+        "notes": ""
+      },
+      {
+        "issue_id": "Q27",
+        "display_title": "刷到别人人生切片",
+        "level1": "自我与情绪",
+        "level2": "信息流比较",
+        "is_default_seed": false,
+        "is_public": true,
+        "notes": ""
+      },
+      {
+        "issue_id": "Q28",
+        "display_title": "未来还没来就害怕",
+        "level1": "自我与情绪",
+        "level2": "未来焦虑",
+        "is_default_seed": false,
+        "is_public": true,
+        "notes": ""
+      },
+      {
+        "issue_id": "Q29",
+        "display_title": "空间太窄喘不过气",
+        "level1": "生活节奏",
+        "level2": "空间压迫",
+        "is_default_seed": false,
+        "is_public": true,
+        "notes": ""
+      },
+      {
+        "issue_id": "Q30",
+        "display_title": "想让味觉先旅行",
+        "level1": "生活节奏",
+        "level2": "空间与远方",
+        "is_default_seed": false,
+        "is_public": true,
+        "notes": ""
+      },
+      {
+        "issue_id": "Q31",
+        "display_title": "时间被榨干",
+        "level1": "生活节奏",
+        "level2": "休息与时间",
+        "is_default_seed": false,
+        "is_public": true,
+        "notes": ""
+      },
+      {
+        "issue_id": "Q32",
+        "display_title": "熬夜换自由",
+        "level1": "生活节奏",
+        "level2": "报复性熬夜",
+        "is_default_seed": false,
+        "is_public": true,
+        "notes": ""
+      },
+      {
+        "issue_id": "Q33",
+        "display_title": "钱与欲望高汤",
+        "level1": "欲望与金钱",
+        "level2": "金钱欲望",
+        "is_default_seed": false,
+        "is_public": true,
+        "notes": ""
+      },
+      {
+        "issue_id": "Q34",
+        "display_title": "幻想一夜暴富",
+        "level1": "欲望与金钱",
+        "level2": "金钱幻想",
+        "is_default_seed": false,
+        "is_public": true,
+        "notes": ""
+      },
+      {
+        "issue_id": "Q35",
+        "display_title": "倒霉透顶求转机",
+        "level1": "欲望与金钱",
+        "level2": "低谷转机",
+        "is_default_seed": true,
+        "is_public": true,
+        "notes": "默认五心结；跨店配方；已有编译警告但不阻断"
+      },
+      {
+        "issue_id": "Q36",
+        "display_title": "苦到极致等回甘",
+        "level1": "欲望与金钱",
+        "level2": "低谷转机",
+        "is_default_seed": false,
+        "is_public": true,
+        "notes": ""
+      },
+      {
+        "issue_id": "Q37",
+        "display_title": "未知恐惧与控制欲",
+        "level1": "自我与情绪",
+        "level2": "过度担心",
+        "is_default_seed": false,
+        "is_public": true,
+        "notes": "跨店配方；已有编译警告但不阻断"
+      },
+      {
+        "issue_id": "Q38",
+        "display_title": "撑太久想软弱",
+        "level1": "自我与情绪",
+        "level2": "疲惫与脆弱",
+        "is_default_seed": false,
+        "is_public": true,
+        "notes": ""
+      },
+      {
+        "issue_id": "Q39",
+        "display_title": "聪明过头不快乐",
+        "level1": "自我与情绪",
+        "level2": "过度思考",
+        "is_default_seed": false,
+        "is_public": true,
+        "notes": "重复食材特殊题；半成功提示共用"
+      },
+      {
+        "issue_id": "Q40",
+        "display_title": "需要一个出门理由",
+        "level1": "生活节奏",
+        "level2": "出门与行动",
+        "is_default_seed": false,
+        "is_public": true,
+        "notes": ""
+      }
+    ]
+  },
   "nonsense_slips": [
     {
       "id": "nonsense-01",

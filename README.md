@@ -14,10 +14,11 @@ This writes `content/runtime-data.json`, which is loaded by `app.js` at runtime.
 
 - `seed_issues`: the five V1 default 心结 choices from `cat_fortune_v1_seed_issues.csv`
 - `issues`: the full 40-issue dataset from `cat_fortune_issue_master_full.csv`
+- `card_flow`: the reviewed 40-issue public card-flow data from `cat_fortune_card_flow_40_review.csv`
 - `shops`, `ingredients`, `recipes`, `half_success_hints`, `success_wisdom`, `nonsense_slips`
 - metadata, validation results, and future-hook source tables for later V2 systems
 
-The default start screen renders only `seed_issues`. The full 40-issue dataset stays available in `runtime-data.json`, but it is not exposed as the first playable choice list yet.
+The default start screen still renders only `seed_issues`. The separate `探索更多心结` entry opens the reviewed 40-issue multi-level emotional card flow from runtime `card_flow`.
 
 Core CSV sources:
 
@@ -25,6 +26,7 @@ Core CSV sources:
 - `cat_fortune_issue_master_full.csv`: Q01-Q40 canonical issue data
 - `cat_fortune_recipes_and_half_success_hints.csv`: playable recipes and half-success hints
 - `cat_fortune_success_wisdom.csv`: success result text
+- `cat_fortune_card_flow_40_review.csv`: manually reviewed 40-issue Level 1 / Level 2 / issue card flow
 - `cat_fortune_ingredients.csv` and `cat_fortune_shops.csv`: playable shop inventory
 - `cat_fortune_nonsense_slips.csv`: failure fallback slips
 
@@ -67,12 +69,16 @@ Stage 3 also includes a lightweight three-way failure punishment baseline. Fully
 
 Submitting a full sacrifice now enters a lightweight judgement transition before showing the result. Stage 1 now includes a judgement overlay, bell shake, glowing sacrifice slots, smoke/glow/flash polish, ingredient fusion cards, a cat silhouette placeholder, and safe SFX hooks for future audio assets, while full physics-style collision, real audio production, and final cat sprite judgement remain future work.
 
-Stage 2 card-selection is completed for the current demo baseline. The default five seed issues remain the main entry, and a separate expanded three-level emotional card-flow demo can be opened from the seed screen using only those five seed issues. The expanded flow now includes lightweight oracle-mode cat master ambience, star-circle/card-dealing polish, and a selected-issue light-orb transition into the existing issue play screen. Full 40-issue taxonomy, real cat sprites, real audio, and full cinematic PRD card animation remain future work.
+Stage 2 card-selection is completed for the current demo baseline. The default five seed issues remain the main entry, and a separate expanded three-level emotional card-flow can be opened from the seed screen. Stage 4 connects this expanded flow to the manually reviewed 40-issue CSV data, grouping Level 1 -> Level 2 -> public issue cards while keeping internal Q ids hidden. The expanded flow retains lightweight oracle-mode cat master ambience, star-circle/card-dealing polish, and a selected-issue light-orb transition into the existing issue play screen.
+
+Stage 4 now also includes a lightweight localStorage collection book. On success, `把智慧带走` saves the food wisdom card locally, avoids duplicate entries, updates the top-right `账本` count, and plays a short fly-to-book feedback animation. The collection book can be opened in-browser and survives page refreshes on the same device.
 
 V3 does not yet implement:
 
-- Full 40-issue public card system
-- Full collection book
+- Polished food card art
+- Full 40-card locked/unlocked album
+- Cloud sync/backend collection storage
+- Real image assets
 - Full cinematic mud-paw/cat-hair punishment interactions with real assets and precise gestures
 - Real LLM API
 - Backend database
@@ -104,11 +110,12 @@ Implemented now:
 - Lightweight opening cover with a dark rainy street mood, neon title, and `[ 推门而入 ]` entry button
 - Short cat master intro using the 0424 dialogue lines before seed selection begins
 - Start from five V1 seed 心结, without showing internal Q ids to the player
-- Offer a separate expanded three-level emotional card-flow demo using the same five seed 心结
+- Offer a separate expanded three-level emotional card flow using the reviewed 40-issue runtime `card_flow` data
 - Resolve the selected seed to its full issue by `issue_id`
 - Use two lightweight sacrifice slots: ingredient clicks fill empty slots, filled slots can be clicked to remove, and judging happens only after clicking `选好了`
 - Show lightweight PRD-aligned result overlays: success food wisdom card, half-success hint modal, and nonsense-slip failure modal
 - Route full failures through lightweight weighted punishments: nonsense slip, mud paw marks, or cat hair allergy
+- Save successful food wisdom cards into a localStorage collection book with duplicate protection and a fly-to-book feedback animation
 - Show the available riddle, mapped shop, playable ingredients, success wisdom, half-success hints, failure slip, retry, and another-issue loop
 
 Intentionally left as future V2 hooks:
@@ -117,5 +124,5 @@ Intentionally left as future V2 hooks:
 - Card-selection animation
 - Complete three-shop street scene
 - Backpack opening, ingredient flying, smoke transition, and cat master silhouette judgement animations
-- Full food card animation, rotating gold rays, collection book persistence, and card collection UI
+- Polished food card art, rotating gold rays, full locked/unlocked album states, duplicate variants, and cloud sync
 - Real-asset mud-paw/cat-hair punishment cinematics and precise swipe gesture handling

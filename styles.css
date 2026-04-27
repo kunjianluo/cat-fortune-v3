@@ -251,6 +251,7 @@ body {
 }
 
 #header {
+  position: relative;
   text-align: center;
   padding: 14px 20px;
   width: 100%;
@@ -265,6 +266,49 @@ body {
 
 .header-subtitle {
   font-size: 12px;
+}
+
+.collection-book-button {
+  position: absolute;
+  top: 50%;
+  right: 18px;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid rgba(241, 196, 15, 0.72);
+  background: rgba(0, 0, 0, 0.34);
+  color: #fff8d8;
+  cursor: pointer;
+  font: inherit;
+  font-size: 13px;
+  padding: 8px 10px;
+  transition: border-color 0.16s ease, color 0.16s ease, background 0.16s ease, box-shadow 0.16s ease;
+}
+
+.collection-book-button:hover,
+.collection-book-button:focus-visible,
+.collection-book-button.has-items {
+  border-color: var(--shop-gold);
+  color: var(--shop-gold);
+  background: rgba(241, 196, 15, 0.1);
+  outline: none;
+}
+
+.collection-book-button.is-pulsing {
+  animation: collection-book-pulse 0.58s ease-out both;
+}
+
+.collection-book-count {
+  min-width: 22px;
+  height: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  font-size: 11px;
+  line-height: 1;
 }
 
 #game-container {
@@ -453,8 +497,8 @@ body {
 
 .card-flow-panel {
   position: relative;
-  width: min(100%, 620px);
-  max-height: min(78vh, 680px);
+  width: min(100%, 720px);
+  max-height: min(calc(100vh - 48px), 720px);
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -656,11 +700,13 @@ body {
 .card-flow-grid {
   position: relative;
   z-index: 1;
+  flex: 1 1 auto;
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(190px, 100%), 1fr));
   gap: 12px;
-  max-height: min(58vh, 520px);
-  overflow: auto;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
   padding: 2px 4px 4px;
 }
 
@@ -1897,6 +1943,15 @@ body {
   line-height: 1.7;
 }
 
+.collection-feedback {
+  min-height: 20px;
+  margin-top: 14px;
+  color: #532700;
+  font-size: 13px;
+  font-weight: bold;
+  line-height: 1.4;
+}
+
 .food-icon {
   font-size: 50px;
   margin-bottom: 10px;
@@ -1937,6 +1992,175 @@ body {
 .result-action-btn:focus-visible {
   background: #000;
   color: var(--shop-gold);
+}
+
+.result-action-btn:disabled {
+  cursor: wait;
+  opacity: 0.72;
+}
+
+.collection-book-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  background:
+    radial-gradient(circle at 50% 38%, rgba(241, 196, 15, 0.12), transparent 34%),
+    rgba(0, 0, 0, 0.82);
+  opacity: 0;
+  transition: opacity 0.16s ease;
+}
+
+.collection-book-overlay.is-visible {
+  opacity: 1;
+}
+
+.collection-book-overlay[hidden] {
+  display: none;
+}
+
+.collection-book-panel {
+  width: min(100%, 760px);
+  max-height: min(calc(100vh - 44px), 720px);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  border: var(--pixel-border);
+  background:
+    radial-gradient(circle at 18% 0%, rgba(77, 231, 255, 0.1), transparent 30%),
+    linear-gradient(180deg, rgba(255, 248, 216, 0.98), rgba(246, 224, 166, 0.98));
+  color: #17120d;
+  padding: 18px;
+  box-shadow:
+    0 0 0 4px rgba(241, 196, 15, 0.18),
+    0 24px 46px rgba(0, 0, 0, 0.42);
+}
+
+.collection-book-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.collection-book-eyebrow {
+  color: #8a1f12;
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+
+.collection-book-panel h3 {
+  margin: 0;
+  font-size: 24px;
+  line-height: 1.25;
+}
+
+.collection-book-close {
+  width: 36px;
+  height: 36px;
+  border: 2px solid #17120d;
+  background: transparent;
+  color: #17120d;
+  cursor: pointer;
+  font: inherit;
+  font-size: 24px;
+  line-height: 1;
+}
+
+.collection-book-close:hover,
+.collection-book-close:focus-visible {
+  background: #17120d;
+  color: var(--shop-gold);
+  outline: none;
+}
+
+.collection-book-grid {
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(210px, 100%), 1fr));
+  gap: 12px;
+  padding: 2px 4px 4px;
+}
+
+.collection-card {
+  min-height: 210px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border: 2px solid #17120d;
+  background:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.05), transparent 18%, transparent 82%, rgba(0, 0, 0, 0.05)),
+    #fff8df;
+  padding: 14px;
+  text-align: left;
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.14);
+}
+
+.collection-card h4 {
+  margin: 0;
+  color: #17120d;
+  font-size: 19px;
+  line-height: 1.3;
+}
+
+.collection-card-issue {
+  color: #8a1f12;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.collection-card p {
+  margin: 0;
+  color: #2c2318;
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.collection-card-date {
+  margin-top: auto;
+  color: #6a5540;
+  font-size: 11px;
+  text-align: right;
+}
+
+.collection-book-empty {
+  grid-column: 1 / -1;
+  border: 2px dashed rgba(23, 18, 13, 0.34);
+  color: #2c2318;
+  padding: 24px 16px;
+  text-align: center;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.collection-fly-card {
+  position: fixed;
+  z-index: 1600;
+  left: 0;
+  top: 0;
+  width: 96px;
+  min-height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #17120d;
+  background: #fff8df;
+  color: #17120d;
+  box-shadow:
+    0 0 18px rgba(241, 196, 15, 0.34),
+    4px 4px 0 rgba(0, 0, 0, 0.16);
+  font-size: 13px;
+  line-height: 1.3;
+  padding: 8px;
+  text-align: center;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(1);
+  animation: collection-fly-to-book 0.72s cubic-bezier(0.2, 0.82, 0.22, 1) both;
 }
 
 .penalty-overlay {
@@ -2506,6 +2730,56 @@ body {
   }
 }
 
+@keyframes collection-fly-to-book {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.92) rotate(-2deg);
+  }
+
+  16% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(calc(-50% + var(--fly-x, 0px)), calc(-50% + var(--fly-y, 0px))) scale(0.3) rotate(8deg);
+  }
+}
+
+@keyframes collection-book-pulse {
+  0% {
+    box-shadow: 0 0 0 rgba(241, 196, 15, 0);
+    transform: translateY(-50%) scale(1);
+  }
+
+  44% {
+    box-shadow: 0 0 24px rgba(241, 196, 15, 0.58);
+    transform: translateY(-50%) scale(1.08);
+  }
+
+  100% {
+    box-shadow: 0 0 0 rgba(241, 196, 15, 0);
+    transform: translateY(-50%) scale(1);
+  }
+}
+
+@keyframes collection-book-pulse-mobile {
+  0% {
+    box-shadow: 0 0 0 rgba(241, 196, 15, 0);
+    transform: scale(1);
+  }
+
+  44% {
+    box-shadow: 0 0 24px rgba(241, 196, 15, 0.58);
+    transform: scale(1.08);
+  }
+
+  100% {
+    box-shadow: 0 0 0 rgba(241, 196, 15, 0);
+    transform: scale(1);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .submit-btn.is-judging,
   .sacrifice-counter.is-judging::after,
@@ -2523,6 +2797,8 @@ body {
   .shopkeeper-placeholder.is-speaking,
   .penalty-card,
   .cat-hair-strand,
+  .collection-book-button.is-pulsing,
+  .collection-fly-card,
   .shop-entry-card,
   .shop-entry-overlay.is-visible .shop-entry-door span {
     animation: none !important;
@@ -2531,6 +2807,7 @@ body {
   .judgement-overlay,
   .shop-entry-overlay,
   .penalty-overlay,
+  .collection-book-overlay,
   .penalty-item {
     transition: none;
   }
@@ -2604,6 +2881,10 @@ body {
 }
 
 @media (max-width: 760px) {
+  #header {
+    padding-right: 104px;
+  }
+
   #game-container {
     justify-content: flex-start;
   }
@@ -2645,7 +2926,7 @@ body {
   }
 
   .card-flow-panel {
-    max-height: none;
+    max-height: calc(100vh - 36px);
   }
 
   .penalty-card {
@@ -2660,6 +2941,20 @@ body {
 }
 
 @media (max-width: 560px) {
+  #header {
+    padding: 12px 12px 14px;
+  }
+
+  .collection-book-button {
+    position: static;
+    transform: none;
+    margin: 10px auto 0;
+  }
+
+  .collection-book-button.is-pulsing {
+    animation-name: collection-book-pulse-mobile;
+  }
+
   .neon-title {
     font-size: 40px;
   }
@@ -2762,13 +3057,20 @@ body {
     max-height: min(62vh, 560px);
   }
 
-  .card-flow-header,
-  .card-flow-grid {
+  .card-flow-header {
     grid-template-columns: 1fr;
   }
 
   .card-flow-title {
     font-size: 20px;
+  }
+
+  .collection-book-panel {
+    padding: 14px;
+  }
+
+  .collection-book-panel h3 {
+    font-size: 21px;
   }
 
   .emotion-category-card,
